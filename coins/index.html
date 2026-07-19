@@ -41,7 +41,8 @@
   .media { display: flex; gap: 10px; margin-bottom: 14px; }
   .media-col { flex: 1; }
   .media-col .label { font-size: 10px; color: #667; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
-  .media-col img { width: 100%; aspect-ratio: 1/1; border-radius: 6px; border: 1px solid #2a2a4a; object-fit: cover; }
+  .media-col img { width: 100%; aspect-ratio: 1/1; border-radius: 6px; border: 1px solid #2a2a4a; object-fit: cover; cursor: pointer; transition: transform 0.15s; }
+  .media-col img:hover { transform: scale(2.2); z-index: 10; position: relative; box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
   .fact { background: rgba(255,255,255,0.04); border-left: 3px solid #4a4a7a; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; line-height: 1.6; color: #bbc; }
   .card.v .fact { border-left-color: #e94560; }
   .card.y .fact { border-left-color: #48bb78; }
