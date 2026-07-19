@@ -92,8 +92,8 @@ h1, h2, h3, .hero p { text-wrap: balance; }
   padding: clamp(2.5rem, 6vw, 4rem) 1.5rem clamp(2rem, 4vw, 3rem);
   text-align: center;
   background:
-    radial-gradient(ellipse 70% 50% at 20% 50%, oklch(28% 0.06 340 / 35%), transparent),
-    radial-gradient(ellipse 50% 60% at 80% 30%, oklch(25% 0.04 260 / 40%), transparent),
+    radial-gradient(ellipse 70% 50% at 20% 50%, oklch(50% 0.22 20 / 85%), transparent),
+    radial-gradient(ellipse 50% 60% at 80% 30%, oklch(48% 0.18 80 / 80%), transparent),
     var(--bg);
 }
 .hero h1 {
