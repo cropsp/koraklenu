@@ -28,11 +28,13 @@
     cursor: pointer;
     transition: transform 0.15s;
   }
-  .media-col img:hover {
-    transform: scale(2.2);
-    z-index: 10;
-    position: relative;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  @media (hover: hover) {
+    .media-col img:hover {
+      transform: scale(2.2);
+      z-index: 10;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
   }
   /* Multiple refs stacked */
   .media-col .ref-stack { display: flex; flex-direction: column; gap: 6px; height: 100%; }

@@ -184,10 +184,12 @@ h1, h2, h3, .hero p { text-wrap: balance; }
   cursor: pointer; object-fit: cover;
   transition: transform 0.15s;
 }
-.refs img:hover {
-  transform: scale(2.5);
-  z-index: 10; position: relative;
-  box-shadow: 0 4px 24px rgb(0 0 0 / 0.5);
+@media (hover: hover) {
+  .refs img:hover {
+    transform: scale(2.5);
+    z-index: 10; position: relative;
+    box-shadow: 0 4px 24px rgb(0 0 0 / 0.5);
+  }
 }
 
 /* ═══════════════ Prompt block ═══════════════ */
@@ -277,5 +279,4 @@ h1, h2, h3, .hero p { text-wrap: balance; }
   .grid, .cat-grid { grid-template-columns: 1fr; }
   .nav a { font-size: 0.7rem; padding: 0.7rem 0.5rem; }
   .refs img { height: 80px; }
-  .refs img:hover { transform: scale(1.8); }
 }

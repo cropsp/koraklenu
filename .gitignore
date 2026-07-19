@@ -2,4 +2,22 @@ node_modules/
 .DS_Store
 *.log
 prompts/
+deploy/
+gemini_profile/
+gemini_script/
+references/
+references_coins/
+package-lock.json
+package.json
+hero-screenshot*.png
+hero-check.png
+hero-v*.png
+full-page.png
+full-check.png
+full-v*.png
+wood-zoom-test.png
+leather-zoom-test.png
+mockup-zoom.png
+mobile-*.png
+coins-mobile.png
 

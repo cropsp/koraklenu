@@ -61,11 +61,13 @@
     cursor: pointer;
     transition: transform 0.15s;
   }
-  .card-refs img:hover {
-    transform: scale(2.2);
-    z-index: 10;
-    position: relative;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  @media (hover: hover) {
+    .card-refs img:hover {
+      transform: scale(2.2);
+      z-index: 10;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    }
   }
   .card-refs .ref-label {
     font-size: 10px;
@@ -81,11 +83,13 @@
     cursor: pointer;
     transition: transform 0.15s;
   }
-  .card-placeholder img:hover {
-    transform: scale(1.8);
-    z-index: 10;
-    position: relative;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  @media (hover: hover) {
+    .card-placeholder img:hover {
+      transform: scale(1.8);
+      z-index: 10;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+    }
   }
 
   /* ── Right: placeholder ── */
