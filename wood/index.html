@@ -201,9 +201,7 @@ function renderProducts() {
           <div class="media-col">
             <div class="label">Референс${p.refs.length > 1 ? 'и' : ''}</div>
             ${p.refs.map(r => `
-              <a href="${r.url}" target="_blank" rel="noopener" title="${r.label}">
-                <img src="${r.url}" alt="${r.label}" loading="lazy" onerror="this.parentElement.style.display='none'">
-              </a>
+              <img src="${r.url}" alt="${r.label}" loading="lazy" onerror="this.style.display='none'">
             `).join('')}
           </div>
           <div class="media-col">
