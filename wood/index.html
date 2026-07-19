@@ -202,15 +202,37 @@ const products = [
     desc: 'Тонка дерев\'яна закладка з ажурним плетеним орнаментом по краю — за мотивами заставок Остромирового Євангелія (1056–1057). Вигравіювана буквиця з рукопису.'
   },
   {
-    id: 'A4',
-    name: 'Підвіска-«колт»',
+    id: 'A4a',
+    name: 'Підвіска-«колт»: сирини + дерево життя',
     refs: [
-      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg', label: 'Колт: сирини + дерево · Met' },
-      { url: 'https://images.metmuseum.org/CRDImages/md/original/17.190.679.jpg', label: 'Колт: птахи + дерево · Met' },
-      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg', label: 'Колт: птахи з перлами · Met' },
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg', label: 'Колт: сирини + дерево · Met' }
+    ],
+    productImage: '../сирини+дерево.png',
+    desc: 'Дерев\'яна підвіска-репліка золотого колта з двома сиринами обабіч дерева життя. Форма та гравійований дизайн точно відтворюють оригінал із колекції Metropolitan Museum (інв. 17.190.680, public domain). Світле дерево, шкіряний шнур.'
+  },
+  {
+    id: 'A4b',
+    name: 'Підвіска-«колт»: птахи + дерево життя',
+    refs: [
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/17.190.679.jpg', label: 'Колт: птахи + дерево · Met' }
+    ],
+    desc: 'Дерев\'яна підвіска-репліка золотого колта з двома птахами обабіч дерева життя. За оригіналом із Metropolitan Museum (інв. 17.190.679, public domain). Світле дерево, шкіряний шнур.'
+  },
+  {
+    id: 'A4c',
+    name: 'Підвіска-«колт»: птахи з перлами',
+    refs: [
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg', label: 'Колт: птахи з перлами · Met' }
+    ],
+    desc: 'Дерев\'яна підвіска-репліка золотого колта з перлинним краєм. Аверс — птахи, реверс — людські голови. За оригіналом із Metropolitan Museum (інв. 17.190.704, public domain). Світле дерево, шкіряний шнур.'
+  },
+  {
+    id: 'A4d',
+    name: 'Підвіска-«колт»: святі з хрестом',
+    refs: [
       { url: 'https://images.metmuseum.org/CRDImages/md/original/DT12038.jpg', label: 'Колт: святі з хрестом · Met' }
     ],
-    desc: 'Серія з 4 варіантів. Дерев\'яна підвіска-репліка золотого колта — форма та гравійований дизайн точно відтворюють оригінали з колекції Metropolitan Museum (public domain). Світле дерево, шкіряний шнур.'
+    desc: 'Дерев\'яна підвіска-репліка золотого колта із зображенням святих із мученицьким хрестом. За оригіналом із Metropolitan Museum (інв. 17.190.699, public domain). Світле дерево, шкіряний шнур.'
   },
   {
     id: 'A5',
@@ -247,8 +269,12 @@ function renderProducts() {
           `).join('')}
         </div>
         <div class="card-placeholder">
-          <div class="ph-icon">🖼️</div>
-          <span>Зображення з'явиться<br>після генерації</span>
+          ${p.productImage ? `
+            <img src="${p.productImage}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
+          ` : `
+            <div class="ph-icon">🖼️</div>
+            <span>Зображення з'явиться<br>після генерації</span>
+          `}
         </div>
       </div>
       <div class="product-card-bottom">
