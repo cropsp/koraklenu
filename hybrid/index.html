@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Гібриди: лазер + текстиль — Княжа доба</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* ── Hybrid category overrides ── */
+  :root {
+    --cat-accent: var(--accent-orange);
+    --cat-accent-dim: rgba(237,137,54,0.3);
+  }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1e1a18 50%, #2a1e14 100%); }
+  .hero h1 { color: var(--accent-orange); }
+  .rule-block { border-color: var(--cat-accent-dim); }
+  .rule-block h3 { color: var(--accent-orange); font-size: 13px; margin-bottom: 6px; }
+
+  .section-title { color: var(--accent-orange); border-bottom-color: var(--accent-orange); }
+
+  .card .badge { background: var(--accent-orange); color: #1a1a2e; }
+  .card .name { color: var(--accent-orange); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="home">Княжа доба</a>
+    <a href="../coins/">🪙 Монети</a>
+    <a href="../wood/">🪵 Дерево</a>
+    <a href="../leather/">🐄 Шкіра</a>
+    <a href="../textile/">👕 Текстиль</a>
+    <a href="../hybrid/" class="active">🔀 Гібриди</a>
+    <a href="../other/">🎨 Інші</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>🔀 Гібриди — лазер + текстиль</h1>
+  <p>Вироби, що поєднують обидві техніки — лазерне гравіювання на шкірі та текстильний друк —<br>в одному продукті: кепки з патчами, подарункові набори, сумки з аплікацією</p>
+</div>
+
+<div class="section" id="products">
+  <!-- ── Rule block ── -->
+  <div class="rule-block">
+    <h3>📐 ACCURACY — блок точності (додавати до кожного промта)</h3>
+    <pre>Faithfully reproduce the design, composition and figures from the
+uploaded reference image. Do not invent any inscriptions, dates, names or
+symbols. If the reference has lettering, copy its letterforms as decorative
+shapes exactly as they appear, or render them as worn, barely legible strokes.
+Do not add the modern Ukrainian state emblem.</pre>
+
+    <h3 style="margin-top:14px;">📸 STYLE — стильовий блок</h3>
+    <pre>professional product photography, soft studio lighting, neutral
+light-gray background, shallow depth of field, photorealistic, high detail,
+no text overlays, no watermarks, museum gift shop aesthetic.</pre>
+
+    <p style="margin-top:12px; color:var(--text-muted); font-size:11px;">
+      ⚠️ Для флет-лей (Г2): <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;">flat lay product photography, top-down view, warm daylight, premium unboxing, photorealistic.</code>
+    </p>
+  </div>
+
+  <!-- ── Product grid rendered by JS ── -->
+  <h2 class="section-title" style="margin-top:20px;">Вироби</h2>
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<footer class="footer">
+  Джерела: Wikipedia (укр./eng.), НМІУ, Енциклопедія історії України, Metropolitan Museum, Wikimedia Commons<br>
+  Генерація зображень: Gemini (Nano Banana) · Точні легенди — у векторі дизайнером<br>
+  <a href="https://github.com/cropsp/koraklenu">GitHub</a>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   Hybrid (лазер + текстиль) — продуктова вітрина
+   ═══════════════════════════════════════════ */
+
+const products = [
+  {
+    id: "Г1",
+    name: "Кепка зі шкіряним патчем",
+    desc: "Оливково-зелена бейсболка з круглим лазерним шкіряним патчем спереду. Патч відтворює грифона з діадеми в обрамленні плетінки.",
+    refs: [
+      { src: "https://spadok.org.ua/images/bolokhiv/2456.jpg", alt: "Сахнівська діадема — грифони" },
+      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — грифони, чернь" }
+    ],
+    prompt: `Using the uploaded references, create a washed olive-green dad cap with a round laser-engraved leather patch sewn on the front, the patch reproducing the griffin from the reference framed by an interlace border. Concrete surface, three-quarter view.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  },
+  {
+    id: "Г2",
+    name: "Подарунковий набір (один мотив наскрізь)",
+    desc: "Флет-лей подарункового набору у відкритій крафтовій коробці: футболка з принтом монети, шкіряний браслет із грифонами, дерев'яний магніт-монета та картка.",
+    refs: [
+      { src: "../references_coins_split/sribnyk_volodymyr.jpg", alt: "Срібник Володимира, тип IV (НМІУ)" },
+      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — грифони, чернь" }
+    ],
+    prompt: `Using the uploaded coin and bracelet references, create a flat lay gift set in an open kraft box with wood shavings: a sand t-shirt with the coin design print folded neatly, a leather cuff with the engraved griffins from the bracelet reference, a wooden coin-magnet reproducing the coin, and a small blank caption card. All designs faithfully follow the references.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: flat lay product photography, top-down view, warm daylight, premium unboxing, photorealistic.`
+  },
+  {
+    id: "Г3",
+    name: "Сумка з аплікацією",
+    desc: "Темна полотняна сумка-тоут із нашитою аплікацією: лазерно-вирізаний силует грифона з дубленої шкіри, пришитий контрастною ниткою. Крупний план швів і краю.",
+    refs: [
+      { src: "https://spadok.org.ua/images/bolokhiv/2456.jpg", alt: "Сахнівська діадема — грифони" }
+    ],
+    prompt: `Using the uploaded diadem photo as reference, create a dark canvas tote bag with a sewn-on appliqué: a laser-cut tan leather silhouette of one griffin from the reference, stitched with visible contrast thread. Close-up showing stitching and laser-cut edge.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  }
+];
+
+/* ── Render ── */
+const grid = document.getElementById('productGrid');
+
+products.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  /* Header */
+  const header = document.createElement('div');
+  header.className = 'card-header';
+  header.innerHTML = `<span class="name">${p.id}. ${p.name}</span><span class="badge">Лазер + текстиль</span>`;
+  card.appendChild(header);
+
+  /* Body */
+  const body = document.createElement('div');
+  body.className = 'card-body';
+
+  /* Description */
+  const desc = document.createElement('p');
+  desc.style.cssText = 'font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;';
+  desc.textContent = p.desc;
+  body.appendChild(desc);
+
+  /* Reference images */
+  if (p.refs && p.refs.length) {
+    const refsDiv = document.createElement('div');
+    refsDiv.className = 'refs';
+    p.refs.forEach(r => {
+      const img = document.createElement('img');
+      img.src = r.src;
+      img.alt = r.alt;
+      img.title = r.alt;
+      img.loading = 'lazy';
+      img.onerror = function() {
+        this.style.display = 'none';
+      };
+      refsDiv.appendChild(img);
+    });
+    body.appendChild(refsDiv);
+  }
+
+  /* Prompt */
+  const promptDiv = document.createElement('div');
+  promptDiv.className = 'prompt';
+  promptDiv.textContent = p.prompt;
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = '📋 Копіювати';
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(p.prompt).then(() => {
+      copyBtn.textContent = '✅ Скопійовано';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = '📋 Копіювати';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      copyBtn.textContent = '❌ Помилка';
+      copyBtn.classList.add('failed');
+      setTimeout(() => {
+        copyBtn.textContent = '📋 Копіювати';
+        copyBtn.classList.remove('failed');
+      }, 2000);
+    });
+  });
+  promptDiv.appendChild(copyBtn);
+
+  body.appendChild(promptDiv);
+  card.appendChild(body);
+  grid.appendChild(card);
+});
+</script>
+
+</body>
+</html>

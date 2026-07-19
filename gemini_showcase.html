@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Монети княжої доби — вітрина</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, serif; background: #0d0d1a; color: #ddd; }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 48px 24px 32px; text-align: center; }
+  .hero h1 { font-size: 36px; color: #e94560; margin-bottom: 8px; }
+  .hero p { color: #8899aa; max-width: 700px; margin: 0 auto; font-size: 15px; line-height: 1.6; }
+  .section { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+  .section-title { font-size: 24px; font-weight: 700; padding: 16px 0; border-bottom: 2px solid; margin-bottom: 28px; }
+  .section-title.v { color: #e94560; border-bottom-color: #e94560; }
+  .section-title.y { color: #48bb78; border-bottom-color: #48bb78; }
+  .section-title.s { color: #ed8936; border-bottom-color: #ed8936; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
+  .card { background: #16162a; border: 1px solid #2a2a4a; border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+  .card:hover { border-color: #4a4a7a; }
+  .card-header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a4a; }
+  .card.v .card-header { border-bottom-color: rgba(233,69,96,0.3); }
+  .card.y .card-header { border-bottom-color: rgba(72,187,120,0.3); }
+  .card.s .card-header { border-bottom-color: rgba(237,137,54,0.3); }
+  .card-header .badge { padding: 2px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+  .badge.v { background: #e94560; color: white; }
+  .badge.y { background: #48bb78; color: #1a1a2e; }
+  .badge.s { background: #ed8936; color: #1a1a2e; }
+  .card-header .name { font-size: 13px; font-weight: 600; }
+  .card-body { padding: 16px; }
+  .media { display: flex; gap: 10px; margin-bottom: 14px; }
+  .media-col { flex: 1; }
+  .media-col .label { font-size: 10px; color: #667; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col img { width: 100%; aspect-ratio: 1/1; border-radius: 6px; border: 1px solid #2a2a4a; object-fit: cover; }
+  .fact { background: rgba(255,255,255,0.04); border-left: 3px solid #4a4a7a; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; line-height: 1.6; color: #bbc; }
+  .card.v .fact { border-left-color: #e94560; }
+  .card.y .fact { border-left-color: #48bb78; }
+  .card.s .fact { border-left-color: #ed8936; }
+  .fact .src { font-size: 10px; color: #556; margin-top: 4px; }
+  .footer { text-align: center; padding: 40px; color: #445; font-size: 12px; }
+  .footer a { color: #667; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>🪙 Монети княжої доби</h1>
+  <p>Сувенірна серія лазерних копій на березовій фанері за оригінальними срібниками та златниками Київської Русі X–XI століть · 14 монет</p>
+</div>
+
+<div class="section">
+  <div class="section-title v">Володимир Великий (980–1015) — 6 монет</div>
+  <div class="grid" id="vladimir"></div>
+</div>
+
+<div class="section">
+  <div class="section-title y">Ярослав Мудрий (1019–1054) — 3 монети</div>
+  <div class="grid" id="yaroslav"></div>
+</div>
+
+<div class="section">
+  <div class="section-title s">Святополк Окаяний (1015–1019) — 5 монет</div>
+  <div class="grid" id="sviatopolk"></div>
+</div>
+
+<div class="footer">
+  Джерела: Wikipedia (укр.), НМІУ, Енциклопедія історії України · Згенеровані зображення: Nano Banana / Gemini<br>
+  Точні легенди монет — у векторі дизайнером, генерації для концептів
+</div>
+
+<script>
+var vladimir = [
+  { id:'V1', side:'Аверс', type:'Срібник, тип IV',
+    ref:'references_coins_split/sribnyk_volodymyr.jpg',
+    mock:'generate_coins/V1.jpg',
+    fact:'Перші срібні монети Київської Русі. Карбовані близько 990 року з нагоди хрещення Русі та одруження Володимира з візантійською принцесою Анною Порфірогенетою. Виготовлялися за зразком візантійського міліарісія, але з оригінальною технікою — карбуванням на литих кружках із переплавленого арабського срібла.',
+    src:'Wikipedia: Срібник' },
+  { id:'V2', side:'Аверс', type:'Срібник, тип I',
+    ref:'references_coins_split/V_obv_typeI.jpg',
+    mock:'generate_coins/V2.jpg',
+    fact:'Тип I срібників Володимира — найдавніший. Легенда монети: «Владимиръ на столѣ а се его сребро». На аверсі — князь на троні зі скіпетром, над лівим плечем — тризуб, родовий знак Рюриковичів. Монети карбувалися в Києві й свідчили про міжнародний авторитет держави.',
+    src:'Wikipedia: Срібник, Монети Київської Русі' },
+  { id:'V3', side:'Реверс', type:'Срібник, тип I',
+    ref:'references_coins_split/V_rev_typeI.jpg',
+    mock:'generate_coins/V3.jpg',
+    fact:'Реверс срібника типу I — тризуб, що займає майже все поле монети. Тризуб Володимира Великого став державним символом Русі, а через тисячу років — Державним гербом України. Це найдавніше зображення тризуба на монетах.',
+    src:'Wikipedia: Знаки Рюриковичів, Тризуб' },
+  { id:'V4', side:'Реверс', type:'Срібник (Одеський музей)',
+    ref:'references_coins_split/coin_vladimir_great.jpg',
+    mock:'generate_coins/V4.jpg',
+    fact:'Фотографія срібника з колекції Одеського музею нумізматики. До XVIII ст. про давньоруські монети нічого не було відомо. Лише у 1815 р. біля Борисполя знайшли перший срібник, який ідентифікували як давньоруський. Остаточне підтвердження походження монет — після Ніжинського скарбу 1852 р.',
+    src:'Wikipedia: Срібник' },
+  { id:'V5', side:'Аверс', type:'Златник (Ермітаж)',
+    ref:'references_coins_split/V_obv_zlatnik.jpg',
+    mock:'references_coins_split/V_obv_zlatnik.jpg',
+    fact:'Златник — перша золота монета Київської Русі. Карбувалася князем Володимиром наприкінці Х ст. Вага ≈4,2 г, золото 916–958 проби. На аверсі — князь зі скіпетром і хрестом, над плечем тризуб. Усього знайдено 11 златників, 6 із Пінського скарбу. Перший викупив київський аптекар Бунге у 1796 р.',
+    src:'Wikipedia: Златник, Енциклопедія історії України' },
+  { id:'V6', side:'Реверс', type:'Златник (Ермітаж)',
+    ref:'references_coins_split/V_rev_zlatnik.jpg',
+    mock:'references_coins_split/V_rev_zlatnik.jpg',
+    fact:'Реверс златника — Христос Пантократор. Реверс однаковий для обох типів златників. Златники наслідують візантійські соліди Василя II та Константина VIII (976–1025). Легенда: «Ісус Христос». Широко як платіжний засіб не використовувалися — мали радше прокламативну, представницьку роль.',
+    src:'Wikipedia: Златник' },
+];
+
+var yaroslav = [
+  { id:'Y1', side:'Аверс', type:'Срібник (св. Георгій, 480×474)',
+    ref:'references_coins_split/sribnyk_yaroslav.jpg',
+    mock:'generate_coins/Y1.jpg',
+    fact:'Срібник Ярослава Мудрого — унікальна пам\'ятка. На аверсі — святий Георгій, небесний покровитель князя: хрещене ім\'я Ярослава — Георгій (Юрій). В історіографії цю монету називають «срібло Ярославле». Карбувалася в Києві та Новгороді між 1019 і 1054 роками. Це один із перших в Європі випадків зображення святого покровителя правителя на монеті — за півстоліття до появи святих на візантійських монетах.',
+    src:'Wikipedia: Срібник, Ярослав Мудрий; М.П. Сотникова, «Древнейшие русские монеты X–XI вв.», 1995' },
+  { id:'Y2', side:'Аверс', type:'Срібник (св. Георгій, фото + мокап)',
+    ref:'references_coins_split/Y_obv_trident_left.jpg',
+    mock:'generate_coins/Y2.jpg',
+    fact:'Аверс срібника Ярослава — св. Георгій зі списом і щитом, навколо легенда кирилицею. До XVIII ст. наука не знала про існування цих монет. Лише Ніжинський скарб 1852 року (близько 200 срібних монет у горщику) остаточно довів: Русь мала власне монетне карбування. Мокап виконано з промальовки — ідеальний для лазерного гравіювання.',
+    src:'Wikipedia: Срібник, Ніжинський скарб; М. Тулов, 1852' },
+  { id:'Y3', side:'Реверс', type:'Срібник (тризуб, фото + мокап)',
+    ref:'references_coins_split/Y_rev_trident_right.jpg',
+    mock:'generate_coins/Y3.jpg',
+    fact:'Реверс срібника Ярослава — тризуб, що займає майже все поле монети. Тризуб Ярослава відрізняється від батьківського (Володимирового): має загострені бічні зубці та ширшу центральну частину. Це свідчить про еволюцію родового знаку Рюриковичів — кожен князь мав власний варіант. Ярослав Мудрий (978–1054) — автор «Руської Правди», будівничий Софії Київської, творець «золотого віку» Русі.',
+    src:'Wikipedia: Ярослав Мудрий, Знаки Рюриковичів' },
+];
+
+var sviatopolk = [
+  { id:'S1', side:'Аверс', type:'Срібник (406×398)',
+    ref:'references_coins_split/sviatopolk_sribnyk_1.jpg',
+    mock:'generate_coins/S1.jpg',
+    fact:'Срібник Святополка Володимировича (Окаянного), 1015–1019 рр. На аверсі — портрет князя з двозубом — власним родовим знаком. Двозуб Святополка (два зубці замість трьох) свідчить про існування системи індивідуальних знаків Рюриковичів.',
+    src:'Wikipedia: Святополк Окаянний, Срібник' },
+  { id:'S2', side:'Аверс', type:'Срібник (353×316)',
+    ref:'references_coins_split/S_obv_wide.jpg',
+    mock:'generate_coins/S2.jpg',
+    fact:'Аверс срібника Святополка — широкий кадр. Вага монети ≈2,87 г, діаметр ≈26,5 мм, проба срібла 796. Для лазерного гравіювання на фанері важлива чіткість портрета князя, яку дає саме це фото.',
+    src:'Wikipedia: Срібник (нумізматичні дані)' },
+  { id:'S3', side:'Реверс', type:'Срібник (353×316)',
+    ref:'references_coins_split/S_rev_wide.jpg',
+    mock:'generate_coins/S3.jpg',
+    fact:'Реверс срібника Святополка — двозуб. Князювання Святополка (1015–1019) було коротким, але він встиг випустити власну монету — свідчення того, що карбування сприймалося як обов\'язковий атрибут легітимного правителя Русі.',
+    src:'Wikipedia: Срібник, Монети Київської Русі' },
+  { id:'S4', side:'Аверс', type:'Срібник hi-res (1015–1016)',
+    ref:'references_coins_split/S_obv_hires.jpg',
+    mock:'generate_coins/S4.jpg',
+    fact:'Високоякісне фото срібника Святополка, 1015–1016 рр. Зі скарбу, виявленого в Чернігівській області 2006 р. Найліпша роздільність для гравіювання: 1920 пікселів дозволяють розгледіти найдрібніші деталі легенди та портрета князя.',
+    src:'Wikimedia Commons, Wikimedia: Srebrenik 1016.jpg' },
+  { id:'S5', side:'Реверс', type:'Срібник hi-res (1015–1016)',
+    ref:'references_coins_split/S_rev_hires.jpg',
+    mock:'references_coins_split/S_rev_hires.jpg',
+    fact:'Реверс срібника Святополка — двозуб, особистий родовий знак князя. Двозуб Святополка принципово відрізняється від тризубів Володимира та Ярослава: замість трьох зубців — два, що засвідчує практику індивідуалізації князівських знаків у династії Рюриковичів. Відомо лише кілька десятків срібників Святополка — це одні з найрідкісніших монет Русі.',
+    src:'Wikipedia: Знаки Рюриковичів; С. Белопольский, «Сребреники Киевской Руси», 2008' },
+];
+
+function makeCard(p, ruler) {
+  var refLabel = 'Референс';
+  var mockLabel = 'Мокап (фанера)';
+  return '<div class="card ' + ruler + '">' +
+    '<div class="card-header"><span class="name">' + p.side + ': ' + p.type + '</span><span class="badge ' + ruler + '">' + p.id + '</span></div>' +
+    '<div class="card-body">' +
+    '<div class="media">' +
+    '<div class="media-col"><div class="label">' + refLabel + '</div><img src="' + p.ref + '" alt="ref" loading="lazy"></div>' +
+    '<div class="media-col"><div class="label">' + mockLabel + '</div><img src="' + p.mock + '" alt="mock" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>' +
+    '</div>' +
+    '<div class="fact">' + p.fact +
+    '<div class="src">📚 ' + p.src + '</div>' +
+    '</div>' +
+    '</div></div>';
+}
+
+document.getElementById('vladimir').innerHTML = vladimir.map(function(p){ return makeCard(p, 'v'); }).join('');
+document.getElementById('yaroslav').innerHTML = yaroslav.map(function(p){ return makeCard(p, 'y'); }).join('');
+document.getElementById('sviatopolk').innerHTML = sviatopolk.map(function(p){ return makeCard(p, 's'); }).join('');
+</script>
+</body>
+</html>

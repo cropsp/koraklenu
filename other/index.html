@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Інші техніки — Княжа доба</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  .hero.hero-other {
+    background: linear-gradient(135deg, #1a1a2e 0%, #1a2e1f 50%, #0f3a28 100%);
+  }
+  .hero.hero-other h1 { color: var(--accent-green); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="home">Княжа доба</a>
+    <a href="../coins/">🪙 Монети</a>
+    <a href="../wood/">🪵 Дерево</a>
+    <a href="../leather/">🐄 Шкіра</a>
+    <a href="../textile/">👕 Текстиль</a>
+    <a href="../hybrid/">🔀 Гібриди</a>
+    <a href="../other/" class="active">🎨 Інші</a>
+  </div>
+</nav>
+
+<div class="hero hero-other">
+  <h1>🎨 Інші техніки</h1>
+  <p>М'яка емаль · кераміка · палітурна справа · сургучні печатки<br>Чотири продукти, що виходять за межі лазерного гравіювання та текстильного друку</p>
+</div>
+
+<div class="section">
+
+  <h2 class="section-title accent-green">Промти для генерації</h2>
+
+  <div class="rule-block">
+    <strong>📋 Блоки, що додаються до кожного промта:</strong>
+    <pre>ACCURACY: Faithfully reproduce the design, composition and figures from the
+uploaded reference image. Do not invent any inscriptions, dates, names or
+symbols. If the reference has lettering, copy its letterforms as decorative
+shapes exactly as they appear, or render them as worn, barely legible strokes.
+Do not add the modern Ukrainian state emblem.</pre>
+    <pre>STYLE: professional product photography, soft studio lighting, neutral
+light-gray background, shallow depth of field, photorealistic, high detail,
+no text overlays, no watermarks, museum gift shop aesthetic.</pre>
+  </div>
+
+  <div class="grid" id="products"></div>
+
+</div>
+
+<footer class="footer">
+  Джерела: Metropolitan Museum (public domain), Wikimedia Commons · Генерація зображень: Gemini (Nano Banana)<br>
+  Точні легенди та написи — у векторі дизайнером, генерації для концептів і презентацій<br>
+  <a href="https://github.com/cropsp/koraklenu">GitHub</a>
+</footer>
+
+<script>
+const ACC = [
+  "ACCURACY: Faithfully reproduce the design, composition and figures from the",
+  "uploaded reference image. Do not invent any inscriptions, dates, names or",
+  "symbols. If the reference has lettering, copy its letterforms as decorative",
+  "shapes exactly as they appear, or render them as worn, barely legible strokes.",
+  "Do not add the modern Ukrainian state emblem."
+].join("\n");
+
+const STL = [
+  "STYLE: professional product photography, soft studio lighting, neutral",
+  "light-gray background, shallow depth of field, photorealistic, high detail,",
+  "no text overlays, no watermarks, museum gift shop aesthetic."
+].join("\n");
+
+const products = [
+  {
+    id: "Д1",
+    name: "Значок із м'якою емаллю «Колт»",
+    refs: ["kolt_siryns.jpg"],
+    refPath: "../references/",
+    prompt: [
+      "Using the uploaded cloisonné kolt photo as reference, create a small enamel",
+      "pin reproducing its exact shape and design: two sirins flanking a tree of",
+      "life in enamel cells of deep blue, red and white with gold metal outlines —",
+      "the modern soft-enamel technique deliberately echoing the original medieval",
+      "cloisonné. Macro shot on a linen jacket lapel.",
+      ACC,
+      STL
+    ].join("\n")
+  },
+  {
+    id: "Д2",
+    name: "Керамічне горня",
+    refs: [],
+    refPath: "../references/",
+    prompt: [
+      "A handmade ceramic mug in warm cream glaze with a band of simple medieval",
+      "Slavic pottery ornament around the middle: parallel wavy and straight",
+      "incised lines, exactly like on 10th–13th century Kyivan Rus pots. A small",
+      "potter's wheel mark stamped on the bottom, shown beside. Rustic kitchen,",
+      "morning light.",
+      "ACCURACY: no invented symbols or text.",
+      STL
+    ].join("\n")
+  },
+  {
+    id: "Д3",
+    name: "Блокнот «Ізборник»",
+    refs: ["izbornik.jpg"],
+    refPath: "../references/",
+    prompt: [
+      "Using the uploaded manuscript page as reference, create a hardcover notebook",
+      "whose cover reproduces the ornate rectangular headpiece frame from the",
+      "reference — old-Byzantine floral ornament with peacocks — with gold accents",
+      "on deep teal, plus a leather spine. On a desk with a fountain pen.",
+      ACC,
+      STL
+    ].join("\n")
+  },
+  {
+    id: "Д4",
+    name: "Сургучна печатка «Молівдовул»",
+    refs: ["sribnyk_yaroslav.jpg"],
+    refPath: "../references_coins_split/",
+    prompt: [
+      "Using the uploaded coin photo as style reference, create a brass wax seal",
+      "stamp carved with the Saint George bust design from the reference, shown",
+      "next to red wax impressions on kraft envelopes. Byzantine seal aesthetic.",
+      ACC,
+      STL
+    ].join("\n")
+  }
+];
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function copyToClipboard(text, btn) {
+  function done(ok) {
+    if (ok) {
+      btn.textContent = '\u2713 Скопійовано!';
+      btn.className = 'copy-btn copied';
+      setTimeout(function(){ btn.textContent = 'Копіювати'; btn.className = 'copy-btn'; }, 2000);
+    } else {
+      btn.textContent = 'Помилка';
+      btn.className = 'copy-btn failed';
+      setTimeout(function(){ btn.textContent = 'Копіювати'; btn.className = 'copy-btn'; }, 2000);
+    }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){
+      fallbackCopy(text, done);
+    });
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  var ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    done(document.execCommand('copy'));
+  } catch(e) {
+    done(false);
+  }
+  document.body.removeChild(ta);
+}
+
+function render() {
+  var container = document.getElementById('products');
+
+  products.forEach(function(p) {
+    var card = document.createElement('div');
+    card.className = 'card';
+
+    var refHtml = p.refs.length === 0
+      ? '<span style="color:var(--text-dim);font-size:12px;font-style:italic">Без референса — орнамент простий і типовий</span>'
+      : p.refs.map(function(r){
+          return '<img src="' + p.refPath + r + '" alt="' + r + '" title="' + r + '" loading="lazy" onerror="this.style.display=\'none\'">';
+        }).join('');
+
+    var promptText = p.prompt;
+
+    card.innerHTML =
+      '<div class="card-header"><span class="name">' + escapeHtml(p.name) + '</span><span class="badge badge-green">' + p.id + '</span></div>' +
+      '<div class="card-body">' +
+      '<div class="refs">' + refHtml + '</div>' +
+      '<div class="prompt">' + escapeHtml(promptText) +
+      '<button class="copy-btn">Копіювати</button></div>' +
+      '</div>';
+
+    card.querySelector('.copy-btn').onclick = function() {
+      copyToClipboard(promptText, this);
+    };
+
+    container.appendChild(card);
+  });
+}
+
+render();
+</script>
+
+</body>
+</html>

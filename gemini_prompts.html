@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Княжа доба — промти для Gemini</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #222; padding: 20px; }
+  h1 { font-size: 28px; margin-bottom: 4px; }
+  .subtitle { color: #666; margin-bottom: 24px; font-size: 14px; }
+  .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(480px, 1fr)); gap: 20px; }
+  .card { background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+  .card-header { background: #1a1a2e; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; }
+  .card-header .id { background: #e94560; padding: 2px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .card-header .name { font-size: 14px; font-weight: 600; }
+  .card-body { padding: 16px; }
+  .refs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .refs img { height: 80px; width: auto; border-radius: 4px; border: 1px solid #ddd; cursor: pointer; object-fit: cover; }
+  .refs img:hover { transform: scale(3); z-index: 10; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .refs .no-ref { color: #999; font-size: 12px; font-style: italic; }
+  .prompt { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 12px; font-size: 12px; line-height: 1.5; white-space: pre-wrap; font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace; position: relative; }
+  .copy-btn { position: absolute; top: 8px; right: 8px; background: #4263eb; color: white; border: none; border-radius: 4px; padding: 4px 10px; font-size: 11px; cursor: pointer; }
+  .copy-btn:hover { background: #3b5bdb; }
+  .copy-btn.copied { background: #2b8a3e; }
+  .copy-btn.failed { background: #e03131; }
+  .footer { margin-top: 30px; text-align: center; color: #999; font-size: 12px; }
+  @media (max-width: 600px) { .products { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>🛡️ Княжа доба — генерація зображень</h1>
+<p class="subtitle">Промти для Gemini (Nano Banana). Завантажте референс → вставте промт → генеруйте.</p>
+
+<div class="products" id="products"></div>
+<div class="footer">
+  <p>Згенеровано з koraklenu_suvenir.MD · Усі референси public domain (Metropolitan Museum, Wikimedia Commons)</p>
+</div>
+
+<script>
+const ACC = `ACCURACY: Faithfully reproduce the design, composition and figures from the
+uploaded reference image. Do not invent any inscriptions, dates, names or
+symbols. If the reference has lettering, copy its letterforms as decorative
+shapes exactly as they appear, or render them as worn, barely legible strokes.
+Do not add the modern Ukrainian state emblem.`;
+
+const STL = `STYLE: professional product photography, soft studio lighting, neutral
+light-gray background, shallow depth of field, photorealistic, high detail,
+no text overlays, no watermarks, museum gift shop aesthetic.`;
+
+const products = [
+  // === МОНЕТИ ===
+  { id: 'M1', name: 'Набір «Монети князів» — три дерев\'яні монети', refs: ['sribnyk_volodymyr.jpg', 'sribnyk_yaroslav.jpg', 'zlatnik_volodymyr.jpg'],
+    prompt: `Using the three uploaded photos of medieval Kyivan Rus coins as exact
+references, create a collectible set of three laser-engraved wooden coin
+replicas, 60 mm each, displayed in a row inside a kraft cardboard collector
+box with a linen lining. Each wooden coin faithfully reproduces one
+reference: (1) the prince on a throne with the trident, (2) Saint George
+with a spear, (3) Christ Pantokrator bust. Deep engraving on birch plywood.
+${ACC}
+${STL}`,
+    group: 'Монети' },
+
+  { id: 'M2', name: 'Монета-магніт «Срібник»', refs: ['sribnyk_volodymyr.jpg'],
+    prompt: `Using the uploaded photo of the medieval srebrenik coin as exact reference,
+refine the wooden engraved coin-magnet: keep the seated prince composition
+and the dotted border exactly as in the reference, make the trident symbol
+match the reference precisely, render the circular legend as the same worn
+letterforms seen in the reference (do not invent new letters). 55 mm birch
+plywood, deep burn engraving.
+${ACC}
+${STL}`,
+    group: 'Монети' },
+
+  { id: 'M3', name: 'Подвійний сувенір «аверс/реверс»', refs: ['sribnyk_volodymyr.jpg'],
+    prompt: `Two laser-engraved wooden coins side by side showing the obverse and reverse
+of the same medieval coin from the uploaded references: one with the seated
+prince, one with the large trident symbol filling the whole field. Presented
+on a small wooden stand with a printed caption card (blank). Museum shop
+collectible look.
+${ACC}
+${STL}`,
+    group: 'Монети' },
+
+  // === ЛАЗЕР ПО ДЕРЕВУ ===
+  { id: 'A2', name: 'Брелоки «Знаки князів» (серія)', refs: ['plinfa_tryzub.jpg', 'pidviska_tryzub.jpg'],
+    prompt: `Using the uploaded reference images of authentic 10th\u201311th century princely
+trident symbols (from a brick stamp and a coin), create a set of three wooden
+keychains laser-cut from birch plywood, displayed on dark slate. Each keychain
+is a cut-through silhouette of one authentic symbol variant from the
+references. Clean charred edges, small leather cords.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A3', name: 'Закладка з плетінкою та буквицею', refs: ['ostromir.jpg'],
+    prompt: `Using the uploaded manuscript page as reference for the ornament style,
+create a slim wooden bookmark, laser-cut from thin plywood, with an openwork
+interlace pattern along one edge copied from the manuscript headpiece, and
+one large engraved initial letter reproduced from the reference. The bookmark
+sticks out of an open old book, warm library light.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A4a', name: 'Підвіска-«колт» (сирини + дерево життя)', refs: ['kolt_siryns.jpg'],
+    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create
+a laser-cut wooden pendant necklace that reproduces its exact shape and
+engraved design. Light wood, dark engraved lines, thin leather cord. Product
+photo on a ceramic dish with dried flowers.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A4b', name: 'Підвіска-«колт» (птахи + дерево життя)', refs: ['kolt_birds.jpg'],
+    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create
+a laser-cut wooden pendant necklace that reproduces its exact shape and
+engraved design. Light wood, dark engraved lines, thin leather cord. Product
+photo on a ceramic dish with dried flowers.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A4c', name: 'Підвіска-«колт» (птахи + перли по краю)', refs: ['kolt_pearls.jpg'],
+    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create
+a laser-cut wooden pendant necklace that reproduces its exact shape and
+engraved design. Light wood, dark engraved lines, thin leather cord. Product
+photo on a ceramic dish with dried flowers.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A4d', name: 'Підвіска-«колт» (святі з хрестом)', refs: ['kolt_saints.jpg'],
+    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create
+a laser-cut wooden pendant necklace that reproduces its exact shape and
+engraved design. Light wood, dark engraved lines, thin leather cord. Product
+photo on a ceramic dish with dried flowers.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A5', name: 'Костери зі сланцю', refs: ['oranta.jpg', 'ostromir.jpg'],
+    prompt: `Using the uploaded mosaic and manuscript references, create a set of four
+round slate coasters with laser-engraved line-art designs: one reproduces the
+standing figure with raised hands from the mosaic reference as fine line art,
+the others use the interlace patterns from the manuscript reference.
+Silver-gray engraving on black slate, stacked and fanned on a wooden table.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  { id: 'A6', name: 'Ялинкова прикраса «Колт»', refs: ['kolt_pearls.jpg'],
+    prompt: `Using the uploaded kolt pendant photo as reference, create a delicate
+laser-cut wooden Christmas ornament reproducing its shape with an openwork
+beaded border, hanging on a red ribbon against a blurred Christmas tree.
+${ACC}
+${STL}`,
+    group: 'Лазер по дереву' },
+
+  // === ЛАЗЕР ПО ШКІРІ ===
+  { id: 'B1', name: 'Шкіряний браслет «Русалії»', refs: ['braslet_1893.jpg', 'braslet_kudryav.jpg'],
+    prompt: `Using the uploaded photos of medieval silver bracelets with engraved arched
+panels as reference, create a wide veg-tan leather cuff bracelet with the
+same scenes laser-engraved along its length, reproducing the figures from
+the references: griffins with turned-back heads and the fantastic beasts in
+arched frames. Dark engraving on cognac leather, brass snap closures.
+${ACC}
+${STL}`,
+    group: 'Лазер по шкірі' },
+
+  { id: 'B2', name: 'Картхолдер із тризубом', refs: ['pidviska_tryzub.jpg'],
+    prompt: `Using the uploaded photo of the ancient trident pendant as reference,
+create a slim cognac leather cardholder with that exact trident symbol
+laser-engraved small and centered. A matching keychain beside it, craft
+workshop table, warm light.
+${ACC}
+${STL}`,
+    group: 'Лазер по шкірі' },
+
+  { id: 'B3', name: 'Шкіряний патч із грифоном', refs: ['diadema_griffins.jpg', 'braslet_1893.jpg'],
+    prompt: `Using the uploaded references, create a round laser-engraved leather patch,
+60 mm, reproducing one griffin from the reference — wings raised, head turned
+back — framed by a thin interlace border. Dark burn on natural tan leather,
+flat on white background, product catalog style.
+${ACC}
+${STL}`,
+    group: 'Лазер по шкірі' },
+
+  // === ТЕКСТИЛЬ ===
+  { id: 'V1', name: 'Футболка «Срібник»', refs: ['sribnyk_volodymyr.jpg'],
+    prompt: `Using the uploaded photo of the medieval srebrenik coin as exact reference,
+create a sand-colored cotton t-shirt on a wooden hanger against a white brick
+wall. Large centered screen print in dark brown reproducing the coin design
+faithfully: the same seated prince, the same trident, the same dotted border,
+and the circular legend rendered as the same worn letterforms visible in the
+reference — do not invent any new text, names or dates. Distressed vintage
+stamp texture.
+${ACC}`,
+    group: 'Текстиль' },
+
+  { id: 'V2', name: 'Футболка «Оранта»', refs: ['oranta.jpg'],
+    prompt: `Using the uploaded mosaic photo as reference, create a black premium t-shirt
+flat lay with a small chest print: the standing figure with raised hands
+reproduced from the reference, built from visible mosaic tesserae squares in
+gold and deep blue. Minimalist, lots of empty space.
+${ACC}`,
+    group: 'Текстиль' },
+
+  { id: 'V3', name: 'Тоут-бег із патерном', refs: ['ostromir.jpg', 'braslet_1893.jpg'],
+    prompt: `Using the uploaded references for ornament style, create a natural cotton
+canvas tote bag whose entire front is covered with a seamless repeating
+interlace pattern derived from the manuscript headpiece ornament in the
+reference, printed in a single deep terracotta color.
+${ACC}
+${STL}`,
+    group: 'Текстиль' },
+
+  { id: 'V4', name: 'Бандана «Русалії»', refs: ['braslet_1893.jpg', 'braslet_kudryav.jpg'],
+    prompt: `Using the uploaded bracelet photos as reference, create a square cotton
+bandana printed with a border composition: around the perimeter run the same
+arched panels with figures reproduced from the references — dancers,
+musicians, griffins — in dark indigo on off-white. A single interlace
+medallion in the center.
+${ACC}
+STYLE: flat lay, top-down view.`,
+    group: 'Текстиль' },
+
+  { id: 'V5', name: 'Дитяча футболка «Сирин»', refs: ['kolt_siryns.jpg'],
+    prompt: `Using the uploaded kolt photo as reference, create a small child-size
+mustard-yellow t-shirt with a friendly storybook-style illustration of the
+sirin bird from the reference — a smiling bird with a human face and little
+halo, simplified shapes, warm colors, keeping the recognizable silhouette
+from the reference. Flat lay with wooden toys.
+${ACC}`,
+    group: 'Текстиль' },
+
+  // === ГІБРИДИ ===
+  { id: 'G1', name: 'Кепка зі шкіряним патчем', refs: ['diadema_griffins.jpg', 'braslet_1893.jpg'],
+    prompt: `Using the uploaded references, create a washed olive-green dad cap with a
+round laser-engraved leather patch sewn on the front, the patch reproducing
+the griffin from the reference framed by an interlace border. Concrete
+surface, three-quarter view.
+${ACC}
+${STL}`,
+    group: 'Гібриди' },
+
+  { id: 'G2', name: 'Подарунковий набір', refs: ['sribnyk_volodymyr.jpg', 'braslet_1893.jpg'],
+    prompt: `Using the uploaded coin and bracelet references, create a flat lay gift set
+in an open kraft box with wood shavings: a sand t-shirt with the coin design
+print folded neatly, a leather cuff with the engraved griffins from the
+bracelet reference, a wooden coin-magnet reproducing the coin, and a small
+blank caption card. All designs faithfully follow the references.
+${ACC}
+STYLE: flat lay, warm daylight, premium unboxing.`,
+    group: 'Гібриди' },
+
+  { id: 'G3', name: 'Сумка з аплікацією', refs: ['diadema_griffins.jpg'],
+    prompt: `Using the uploaded diadem photo as reference, create a dark canvas tote bag
+with a sewn-on appliqué: a laser-cut tan leather silhouette of one griffin
+from the reference, stitched with visible contrast thread. Close-up showing
+stitching and laser-cut edge.
+${ACC}
+${STL}`,
+    group: 'Гібриди' },
+
+  // === ІНШІ ТЕХНІКИ ===
+  { id: 'D1', name: 'Значок із м\'якою емаллю «Колт»', refs: ['kolt_siryns.jpg'],
+    prompt: `Using the uploaded cloisonné kolt photo as reference, create a small enamel
+pin reproducing its exact shape and design: two sirins flanking a tree of
+life in enamel cells of deep blue, red and white with gold metal outlines —
+the modern soft-enamel technique deliberately echoing the original medieval
+cloisonné. Macro shot on a linen jacket lapel.
+${ACC}
+${STL}`,
+    group: 'Інші техніки' },
+
+  { id: 'D2', name: 'Керамічне горня', refs: [],
+    prompt: `A handmade ceramic mug in warm cream glaze with a band of simple medieval
+Slavic pottery ornament around the middle: parallel wavy and straight
+incised lines, exactly like on 10th–13th century Kyivan Rus pots. A small
+potter's wheel mark stamped on the bottom, shown beside. Rustic kitchen,
+morning light.
+ACCURACY: no invented symbols or text.
+${STL}`,
+    group: 'Інші техніки' },
+
+  { id: 'D3', name: 'Блокнот «Ізборник»', refs: ['izbornik.jpg'],
+    prompt: `Using the uploaded manuscript page as reference, create a hardcover notebook
+whose cover reproduces the ornate rectangular headpiece frame from the
+reference — old-Byzantine floral ornament with peacocks — with gold accents
+on deep teal, plus a leather spine. On a desk with a fountain pen.
+${ACC}
+${STL}`,
+    group: 'Інші техніки' },
+
+  { id: 'D4', name: 'Сургучна печатка «Молівдовул»', refs: ['sribnyk_yaroslav.jpg'],
+    prompt: `Using the uploaded coin photo as style reference, create a brass wax seal
+stamp carved with the Saint George bust design from the reference, shown
+next to red wax impressions on kraft envelopes. Byzantine seal aesthetic.
+${ACC}
+${STL}`,
+    group: 'Інші техніки' },
+
+  // === НОВА ГРУПА: МОНЕТИ КНЯЖОЇ ДОБИ (ЛАЗЕР ПО ФАНЕРІ) ===
+  { id: 'N1', name: 'Магніт «Срібник Святополка»', refs: ['sviatopolk_sribnyk_1.jpg'],
+    prompt: `Using the uploaded photo of the medieval srebrenik of Sviatopolk the Accursed
+as exact reference, create a wooden engraved coin-magnet: reproduce the prince
+portrait with the bident (two-pronged) symbol exactly as in the reference, keep
+the circular legend as worn letterforms seen in the reference (do not invent
+new letters), dotted border matching the reference. 55 mm birch plywood,
+deep burn engraving.
+${ACC}
+${STL}`,
+    group: 'Монети княжої доби (фанера)' },
+
+  { id: 'N2', name: 'Магніт «Срібник Ярослава» (св. Георгій)', refs: ['yaroslav_reverse.png'],
+    prompt: `Using the uploaded photo of the medieval srebrenik of Yaroslav the Wise as
+exact reference, create a wooden engraved coin-magnet: reproduce the standing
+figure of Saint George with spear exactly as in the reference, keep the circular
+legend as worn letterforms seen in the reference (do not invent new letters),
+dotted border matching the reference. 55 mm birch plywood, deep burn engraving.
+${ACC}
+${STL}`,
+    group: 'Монети княжої доби (фанера)' },
+
+  { id: 'N3', name: 'Набір «Реверси князів» — три монети з тризубами', refs: ['coin_vladimir_great.jpg', 'srebrenik_yaroslav_trident.jpg', 'sviatopolk_srebrenik.jpg'],
+    prompt: `Using the three uploaded photos of medieval Kyivan Rus coin reverses as exact
+references, create a set of three laser-engraved wooden coins, 60 mm each,
+displayed in a row on dark slate. Each coin shows only the reverse side of
+one ruler's coin reproduced as a large engraved emblem filling the entire
+field: (1) the trident of Vladimir the Great, (2) the trident of Yaroslav the
+Wise, (3) the bident of Sviatopolk the Accursed. Deep engraving on birch
+plywood, the symbol dominating the composition.
+${ACC}
+${STL}`,
+    group: 'Монети княжої доби (фанера)' },
+
+  { id: 'N4', name: 'Магніт «Срібник Володимира» (тип I, аверс)', refs: ['coin_volodymyr.jpg'],
+    prompt: `Using the uploaded photo of the medieval srebrenik of Vladimir the Great
+(type I) as exact reference, create a wooden engraved coin-magnet: reproduce
+the enthroned prince with the trident symbol on the obverse exactly as in
+the reference, keep the circular legend as the same worn letterforms seen
+in the reference (do not invent new letters). 55 mm birch plywood, deep
+burn engraving.
+${ACC}
+${STL}`,
+    group: 'Монети княжої доби (фанера)' },
+
+  { id: 'N5', name: 'Набір «Срібники трьох князів» у коробці', refs: ['coin_volodymyr_3.jpg', 'yaroslav_reverse.png', 'sviatopolk_sribnyk_1.jpg'],
+    prompt: `Using the uploaded photos of medieval Kyivan Rus srebreniks of Vladimir,
+Yaroslav and Sviatopolk as exact references, create a premium collector set
+of three laser-engraved wooden coin replicas, 70 mm each, displayed inside a
+dark wooden presentation box with a linen lining and three circular recesses.
+Each wooden coin faithfully reproduces one reference: (1) Vladimir the Great
+on his throne, (2) Saint George of Yaroslav the Wise, (3) the prince portrait
+of Sviatopolk. Deep engraving on birch plywood, museum-quality collector
+presentation.
+${ACC}
+${STL}`,
+    group: 'Монети княжої доби (фанера)' },
+];
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function copyToClipboard(text, btn) {
+  var method = 'api';
+  function done(ok) {
+    if (ok) {
+      btn.textContent = '\u2713 Copied!';
+      btn.className = 'copy-btn copied';
+      setTimeout(function(){ btn.textContent = 'Copy'; btn.className = 'copy-btn'; }, 2000);
+    } else {
+      btn.textContent = 'Failed';
+      btn.className = 'copy-btn failed';
+      setTimeout(function(){ btn.textContent = 'Copy'; btn.className = 'copy-btn'; }, 2000);
+    }
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){ method = 'fallback'; });
+  } else {
+    method = 'fallback';
+  }
+  if (method === 'fallback') {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      done(document.execCommand('copy'));
+    } catch(e) {
+      done(false);
+    }
+    document.body.removeChild(ta);
+  }
+}
+
+function render() {
+  var container = document.getElementById('products');
+  var groups = {};
+  products.forEach(function(p) {
+    if (!groups[p.group]) groups[p.group] = [];
+    groups[p.group].push(p);
+  });
+
+  var groupNames = Object.keys(groups);
+  groupNames.forEach(function(groupName) {
+    var groupProducts = groups[groupName];
+    var header = document.createElement('div');
+    header.style.cssText = 'grid-column: 1 / -1; font-size: 20px; font-weight: 700; color: #1a1a2e; margin-top: 8px; padding: 8px 0; border-bottom: 2px solid #1a1a2e;';
+    header.textContent = '\uD83D\uDCC1 ' + groupName + ' (' + groupProducts.length + ')';
+    container.appendChild(header);
+
+    groupProducts.forEach(function(p) {
+      var card = document.createElement('div');
+      card.className = 'card';
+
+      var refHtml = p.refs.length === 0
+        ? '<span class="no-ref">Без референсу</span>'
+        : p.refs.map(function(r){ return '<img src="references/' + r + '" alt="' + r + '" title="' + r + '" onerror="this.style.display=\'none\'">'; }).join('');
+
+      card.innerHTML =
+        '<div class="card-header"><span class="name">' + p.name + '</span><span class="id">' + p.id + '</span></div>' +
+        '<div class="card-body">' +
+        '<div class="refs">' + refHtml + '</div>' +
+        '<div class="prompt">' + escapeHtml(p.prompt) +
+        '<button class="copy-btn" data-prompt="' + escapeHtml(p.prompt) + '">Copy</button></div>' +
+        '</div>';
+
+      // Attach click handler
+      card.querySelector('.copy-btn').onclick = function() {
+        copyToClipboard(this.getAttribute('data-prompt'), this);
+      };
+
+      container.appendChild(card);
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>

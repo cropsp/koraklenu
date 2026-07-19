@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Монети княжої доби — промти для Gemini</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; color: #222; padding: 20px; }
+  h1 { font-size: 28px; margin-bottom: 4px; }
+  .subtitle { color: #666; margin-bottom: 20px; font-size: 14px; }
+  .rule-block { background: #fffbe6; border: 1px solid #ffe58f; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; line-height: 1.6; }
+  .rule-block code { background: #fff; border: 1px solid #ddd; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+  .products { display: grid; grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); gap: 14px; }
+  .card { background: white; border-radius: 10px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); overflow: hidden; }
+  .card-header { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid; }
+  .card-header.v { background: #1a1a2e; color: white; border-bottom-color: #e94560; }
+  .card-header.y { background: #2d3748; color: white; border-bottom-color: #48bb78; }
+  .card-header.s { background: #3c366b; color: white; border-bottom-color: #ed8936; }
+  .card-header .id { padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+  .card-header.v .id { background: #e94560; }
+  .card-header.y .id { background: #48bb78; color: #1a1a2e; }
+  .card-header.s .id { background: #ed8936; color: #1a1a2e; }
+  .card-header .name { font-size: 13px; font-weight: 600; }
+  .card-body { padding: 14px; }
+  .refs { display: flex; gap: 8px; margin-bottom: 10px; }
+  .refs img { height: 100px; width: auto; border-radius: 4px; border: 1px solid #ddd; cursor: pointer; object-fit: cover; }
+  .refs img:hover { transform: scale(3); z-index: 10; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+  .prompt { background: #f8f9fa; border: 1px solid #e9ecef; border-radius: 6px; padding: 10px; font-size: 11px; line-height: 1.45; white-space: pre-wrap; font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace; position: relative; }
+  .copy-btn { position: absolute; top: 6px; right: 6px; background: #4263eb; color: white; border: none; border-radius: 4px; padding: 3px 8px; font-size: 10px; cursor: pointer; }
+  .copy-btn:hover { background: #3b5bdb; }
+  .copy-btn.copied { background: #2b8a3e; }
+  .copy-btn.failed { background: #e03131; }
+  .footer { margin-top: 30px; text-align: center; color: #999; font-size: 12px; }
+  @media (max-width: 500px) { .products { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>🪙 Монети княжої доби — фанера / лазер</h1>
+<p class="subtitle">Кожна монета і кожна сторона — окремий промт. Генерація в Gemini (Nano Banana).</p>
+
+<div class="rule-block">
+<strong>⚡ БЛОК ТОЧНОСТІ</strong> (додається до кожного промта):
+<pre style="background:#fff;border:1px solid #ddd;padding:6px;margin:4px 0;font-size:10px;border-radius:3px;">
+ACCURACY: Faithfully reproduce the design, composition and figures from the
+uploaded reference image. Do not invent any inscriptions, dates, names or
+symbols. If the reference has lettering, copy its letterforms as decorative
+shapes exactly as they appear, or render them as worn, barely legible strokes.
+Do not add the modern Ukrainian state emblem.
+</pre>
+<strong>СТИЛЬ:</strong>
+<pre style="background:#fff;border:1px solid #ddd;padding:6px;margin:4px 0;font-size:10px;border-radius:3px;">
+STYLE: professional product photography, soft studio lighting, neutral
+light-gray background, shallow depth of field, photorealistic, high detail,
+no text overlays, no watermarks, museum gift shop aesthetic.
+</pre>
+</div>
+
+<div class="products" id="products"></div>
+<div class="footer">
+  <p>Усі референси public domain (Wikimedia Commons) · Точні легенди — у векторі дизайнером</p>
+</div>
+
+<script>
+var ACC = 'ACCURACY: Faithfully reproduce the design, composition and figures from the\nuploaded reference image. Do not invent any inscriptions, dates, names or\nsymbols. If the reference has lettering, copy its letterforms as decorative\nshapes exactly as they appear, or render them as worn, barely legible strokes.\nDo not add the modern Ukrainian state emblem.';
+
+var STL = 'STYLE: professional product photography, soft studio lighting, neutral\nlight-gray background, shallow depth of field, photorealistic, high detail,\nno text overlays, no watermarks, museum gift shop aesthetic.';
+
+var products = [
+  // ===== ВОЛОДИМИР ВЕЛИКИЙ (6 продуктів) =====
+  { id: 'V1', ruler: 'v',
+    name: 'Аверс: князь на троні з тризубом (тип IV, НМІУ, 960×960)',
+    ref: 'sribnyk_volodymyr.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(NMIU, type IV) as exact reference, create a laser-engraved wooden coin-\nmagnet. Reproduce the obverse design faithfully: the enthroned prince, the\ntrident symbol, the dotted border, and the circular legend rendered as the\nsame worn letterforms visible in the reference — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'V2', ruler: 'v',
+    name: 'Аверс: князь на троні + тризуб (тип I, 335×335)',
+    ref: 'V_obv_typeI.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(type I, obverse) as exact reference, create a laser-engraved wooden coin-\nmagnet. Reproduce the obverse design faithfully: the enthroned prince, the\ntrident symbol, the dotted border, and the circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'V3', ruler: 'v',
+    name: 'Реверс: тризуб на все поле (тип I, 335×335)',
+    ref: 'V_rev_typeI.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(type I, reverse) as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the large trident symbol filling\nthe entire field, the dotted border. No text needed — the symbol dominates.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'V4', ruler: 'v',
+    name: 'Реверс: тризуб (Одеський нумізматичний музей, 328×317)',
+    ref: 'coin_vladimir_great.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Vladimir the\nGreat (Odesa Numismatic Museum) as exact reference, create a laser-engraved\nwooden coin. Reproduce the reverse design faithfully: the large trident\nsymbol with the surrounding dotted border exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'V5', ruler: 'v',
+    name: 'Златник, аверс: князь (Ермітаж, 352×374)',
+    ref: 'V_obv_zlatnik.jpg',
+    prompt: 'Using the uploaded photo of the medieval zlatnik (gold coin) of Vladimir\nthe Great (Hermitage) as exact reference, create a laser-engraved wooden\ncoin-magnet. Reproduce the obverse design faithfully: the prince portrait\nexactly as in the reference. Circular legend as worn letterforms — do not\ninvent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'V6', ruler: 'v',
+    name: 'Златник, реверс: Христос Пантократор (Ермітаж, 353×374)',
+    ref: 'V_rev_zlatnik.jpg',
+    prompt: 'Using the uploaded photo of the medieval zlatnik (gold coin) of Vladimir\nthe Great (Hermitage) as exact reference, create a laser-engraved wooden\ncoin. Reproduce the reverse design faithfully: the bust of Christ\nPantokrator exactly as in the reference. Circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  // ===== ЯРОСЛАВ МУДРИЙ (5 продуктів) =====
+  { id: 'Y1', ruler: 'y',
+    name: 'Аверс: св. Георгій зі списом + тризуб (480×474)',
+    ref: 'sribnyk_yaroslav.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Yaroslav the Wise as\nexact reference, create a laser-engraved wooden coin-magnet. Reproduce the\nobverse design faithfully: the standing figure with spear (Saint George),\nthe circular legend, and the princely emblem — all exactly as in the\nreference. Render lettering as worn decorative strokes, do not invent\nnew letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'Y2', ruler: 'y',
+    name: 'Аверс: св. Георгій, промальовка (300×298)',
+    ref: 'Y_obv_stgeorge.jpg',
+    prompt: 'Using the uploaded line-art reference of the medieval srebrenik of\nYaroslav the Wise as exact reference, create a laser-engraved wooden\ncoin-magnet. Reproduce the obverse design faithfully: Saint George with\nspear exactly as in the reference. The line-art style translates\nnaturally to laser engraving.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'Y3', ruler: 'y',
+    name: 'Реверс: тризуб, промальовка (300×298)',
+    ref: 'Y_rev_trident_gif.jpg',
+    prompt: 'Using the uploaded line-art reference of the medieval srebrenik reverse\nof Yaroslav the Wise as exact reference, create a laser-engraved wooden\ncoin. Reproduce the reverse design faithfully: the large trident symbol\nexactly as in the reference. The line-art style translates naturally to\nlaser engraving.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'Y4', ruler: 'y',
+    name: 'Аверс: св. Георгій (200×246)',
+    ref: 'Y_obv_trident_left.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Yaroslav the Wise\nas exact reference, create a laser-engraved wooden coin-magnet. Reproduce\nthe obverse design faithfully: the standing figure with spear exactly as\nin the reference. Circular legend as worn letterforms — do not invent\nnew letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'Y5', ruler: 'y',
+    name: 'Реверс: тризуб (200×246)',
+    ref: 'Y_rev_trident_right.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Yaroslav\nthe Wise as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the large trident symbol filling\nthe field exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  // ===== СВЯТОПОЛК (5 продуктів) =====
+  { id: 'S1', ruler: 's',
+    name: 'Аверс: портрет князя + двозуб (406×398)',
+    ref: 'sviatopolk_sribnyk_1.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Sviatopolk the\nAccursed as exact reference, create a laser-engraved wooden coin-magnet.\nReproduce the obverse design faithfully: the prince portrait with the\ntwo-pronged symbol (bident) exactly as in the reference. Circular legend\nas worn letterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'S2', ruler: 's',
+    name: 'Аверс: портрет князя (353×316)',
+    ref: 'S_obv_wide.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik of Sviatopolk the\nAccursed as exact reference, create a laser-engraved wooden coin-magnet.\nReproduce the obverse design faithfully: the prince portrait exactly as\nin the reference. Dotted border, circular legend as worn letterforms —\ndo not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'S3', ruler: 's',
+    name: 'Реверс: двозуб (353×316)',
+    ref: 'S_rev_wide.jpg',
+    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Sviatopolk\nthe Accursed as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the two-pronged symbol (bident)\nexactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'S4', ruler: 's',
+    name: 'Аверс: портрет князя, hi-res (960×993, 1015–1016)',
+    ref: 'S_obv_hires.jpg',
+    prompt: 'Using the uploaded high-resolution photo of the medieval srebrenik of\nSviatopolk the Accursed (1015–1016) as exact reference, create a wooden\ncoin-magnet. Reproduce the obverse design faithfully: the prince portrait\nexactly as in the reference. Dotted border, circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+
+  { id: 'S5', ruler: 's',
+    name: 'Реверс: двозуб, hi-res (960×993, 1015–1016)',
+    ref: 'S_rev_hires.jpg',
+    prompt: 'Using the uploaded high-resolution photo of the medieval srebrenik reverse\nof Sviatopolk the Accursed (1015–1016) as exact reference, create a wooden\ncoin. Reproduce the reverse design faithfully: the two-pronged symbol\n(bident) exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
+];
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function copyToClipboard(text, btn) {
+  var method = 'api';
+  function done(ok) {
+    if (ok) { btn.textContent = '\u2713 Copied!'; btn.className = 'copy-btn copied'; }
+    else { btn.textContent = 'Failed'; btn.className = 'copy-btn failed'; }
+    setTimeout(function(){ btn.textContent = 'Copy'; btn.className = 'copy-btn'; }, 2000);
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){ method = 'fallback'; });
+  } else { method = 'fallback'; }
+  if (method === 'fallback') {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { done(document.execCommand('copy')); } catch(e) { done(false); }
+    document.body.removeChild(ta);
+  }
+}
+
+function render() {
+  var container = document.getElementById('products');
+  var rulers = {
+    v: { name: 'Володимир Великий (980–1015)', color: '#e94560', items: [] },
+    y: { name: 'Ярослав Мудрий (1019–1054)', color: '#48bb78', items: [] },
+    s: { name: 'Святополк Окаяний (1015–1019)', color: '#ed8936', items: [] }
+  };
+  products.forEach(function(p) { rulers[p.ruler].items.push(p); });
+
+  Object.keys(rulers).forEach(function(key) {
+    var r = rulers[key];
+    var header = document.createElement('div');
+    header.style.cssText = 'grid-column: 1 / -1; font-size: 20px; font-weight: 700; color: #1a1a2e; margin-top: 12px; padding: 6px 0; border-bottom: 2px solid ' + r.color + ';';
+    header.textContent = r.name + ' — ' + r.items.length + ' продуктів';
+    container.appendChild(header);
+
+    r.items.forEach(function(p) {
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML =
+        '<div class="card-header ' + p.ruler + '"><span class="name">' + p.name + '</span><span class="id">' + p.id + '</span></div>' +
+        '<div class="card-body">' +
+        '<div class="refs"><img src="references_coins_split/' + p.ref + '" alt="' + p.ref + '" title="' + p.ref + '" onerror="this.style.display=\'none\'"></div>' +
+        '<div class="prompt">' + escapeHtml(p.prompt) +
+        '<button class="copy-btn" data-prompt="' + escapeHtml(p.prompt) + '">Copy</button></div>' +
+        '</div>';
+      card.querySelector('.copy-btn').onclick = function() {
+        copyToClipboard(this.getAttribute('data-prompt'), this);
+      };
+      container.appendChild(card);
+    });
+  });
+}
+
+render();
+</script>
+</body>
+</html>

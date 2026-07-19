@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Лазер по дереву — Княжа доба</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+  /* ── Wood category overrides ── */
+  :root {
+    --cat-accent: var(--accent-gold);
+    --cat-accent-dim: rgba(212,168,67,0.3);
+  }
+  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1e1a14 50%, #2a2018 100%); }
+  .hero h1 { color: var(--accent-gold); }
+  .rule-block { border-color: var(--cat-accent-dim); }
+  .rule-block h3 { color: var(--accent-gold); font-size: 13px; margin-bottom: 6px; }
+
+  .section-title { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+
+  .card .badge { background: var(--accent-gold); color: #1a1a2e; }
+  .card .name { color: var(--accent-gold); }
+
+  .empty-state { text-align: center; color: var(--text-dim); padding: 40px; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="../" class="home">Княжа доба</a>
+    <a href="../coins/">🪙 Монети</a>
+    <a href="../wood/" class="active">🪵 Дерево</a>
+    <a href="../leather/">🐄 Шкіра</a>
+    <a href="../textile/">👕 Текстиль</a>
+    <a href="../hybrid/">🔀 Гібриди</a>
+    <a href="../other/">🎨 Інші</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <h1>🪵 Лазер по дереву</h1>
+  <p>Лазерне гравіювання та різання на березовій фанері — брелоки, підвіски, закладки,<br>костери та ялинкові прикраси за мотивами мистецтва Київської Русі X–XIII століть</p>
+</div>
+
+<div class="section" id="products">
+  <!-- ── Rule block ── -->
+  <div class="rule-block">
+    <h3>📐 ACCURACY — блок точності (додавати до кожного промта)</h3>
+    <pre>Faithfully reproduce the design, composition and figures from the
+uploaded reference image. Do not invent any inscriptions, dates, names or
+symbols. If the reference has lettering, copy its letterforms as decorative
+shapes exactly as they appear, or render them as worn, barely legible strokes.
+Do not add the modern Ukrainian state emblem.</pre>
+
+    <h3 style="margin-top:14px;">📸 STYLE — стильовий блок</h3>
+    <pre>professional product photography, soft studio lighting, neutral
+light-gray background, shallow depth of field, photorealistic, high detail,
+no text overlays, no watermarks, museum gift shop aesthetic.</pre>
+
+    <p style="margin-top:12px; color:var(--text-muted); font-size:11px;">
+      ⚠️ Для флет-лей: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;">flat lay product photography, top-down view, linen fabric background, natural window light, photorealistic.</code>
+    </p>
+  </div>
+
+  <!-- ── Product grid rendered by JS ── -->
+  <h2 class="section-title" style="margin-top:20px;">Вироби</h2>
+  <div class="grid" id="productGrid"></div>
+</div>
+
+<footer class="footer">
+  Джерела: Wikipedia (укр./eng.), НМІУ, Енциклопедія історії України, Metropolitan Museum, Wikimedia Commons<br>
+  Генерація зображень: Gemini (Nano Banana) · Точні легенди — у векторі дизайнером<br>
+  <a href="https://github.com/cropsp/koraklenu">GitHub</a>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   Wood Laser — продуктова вітрина
+   ═══════════════════════════════════════════ */
+
+const products = [
+  {
+    id: "A2",
+    name: "Брелоки «Знаки князів» (серія)",
+    desc: "Набір із трьох дерев'яних брелоків — наскрізні силуети автентичних княжих знаків X–XI ст.",
+    refs: [
+      { src: "https://old.nmiu.org/images/content/exponat_week/plinfa.jpg", alt: "Плінфа з тризубом Володимира" },
+      { src: "https://old.nmiu.org/images/content/exponat_week/pidviska_tryzub.jpg", alt: "Підвіска з Циблів — тризуб + рослинний орнамент" }
+    ],
+    prompt: `Using the uploaded reference images of authentic 10th–11th century princely trident symbols (from a brick stamp and a coin), create a set of three wooden keychains laser-cut from birch plywood, displayed on dark slate. Each keychain is a cut-through silhouette of one authentic symbol variant from the references. Clean charred edges, small leather cords.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  },
+  {
+    id: "A3",
+    name: "Закладка з плетінкою та буквицею",
+    desc: "Тонка дерев'яна закладка з ажурною плетінкою вздовж краю та гравійованою буквицею з Остромирового Євангелія.",
+    refs: [
+      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Сторінка Остромирового Євангелія із заставкою" }
+    ],
+    prompt: `Using the uploaded manuscript page as reference for the ornament style, create a slim wooden bookmark, laser-cut from thin plywood, with an openwork interlace pattern along one edge copied from the manuscript headpiece, and one large engraved initial letter reproduced from the reference. The bookmark sticks out of an open old book, warm library light.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  },
+  {
+    id: "A4",
+    name: "Підвіска-«колт» (серія з 4 варіантів)",
+    desc: "Лазерна дерев'яна підвіска-намисто, що відтворює форму та гравійований дизайн середньовічного золотого колта. Серія з 4 різних варіантів (по одному референсу на генерацію).",
+    refs: [
+      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg", alt: "Колт: два сирини + дерево життя" },
+      { src: "https://images.metmuseum.org/CRDImages/md/original/17.190.679.jpg", alt: "Колт: два птахи + дерево життя" },
+      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg", alt: "Колт: птахи + перли по краю" },
+      { src: "https://images.metmuseum.org/CRDImages/md/original/DT12038.jpg", alt: "Колт: святі з мученицьким хрестом" }
+    ],
+    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create a laser-cut wooden pendant necklace that reproduces its exact shape and engraved design. Light wood, dark engraved lines, thin leather cord. Product photo on a ceramic dish with dried flowers.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  },
+  {
+    id: "A5",
+    name: "Костери зі сланцю",
+    desc: "Набір із чотирьох круглих сланцевих костерів з лазерним гравіюванням: Оранта та три варіанти плетінки з Остромирового Євангелія.",
+    refs: [
+      { src: "https://commons.wikimedia.org/wiki/File:Oranta-Kyiv.jpg", alt: "Оранта, Софія Київська" },
+      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Остромирове Євангеліє — заставка з плетінкою" }
+    ],
+    prompt: `Using the uploaded mosaic and manuscript references, create a set of four round slate coasters with laser-engraved line-art designs: one reproduces the standing figure with raised hands from the mosaic reference as fine line art, the others use the interlace patterns from the manuscript reference. Silver-gray engraving on black slate, stacked and fanned on a wooden table.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  },
+  {
+    id: "A6",
+    name: "Ялинкова прикраса «Колт»",
+    desc: "Делікатна ажурна дерев'яна ялинкова прикраса у формі колта з перловим краєм, на червоній стрічці.",
+    refs: [
+      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg", alt: "Колт з перлами по краю" }
+    ],
+    prompt: `Using the uploaded kolt pendant photo as reference, create a delicate laser-cut wooden Christmas ornament reproducing its shape with an openwork beaded border, hanging on a red ribbon against a blurred Christmas tree.
+
+ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
+
+STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+  }
+];
+
+/* ── Render ── */
+const grid = document.getElementById('productGrid');
+
+products.forEach(p => {
+  const card = document.createElement('div');
+  card.className = 'card';
+
+  /* Header */
+  const header = document.createElement('div');
+  header.className = 'card-header';
+  header.innerHTML = `<span class="name">${p.id}. ${p.name}</span><span class="badge">Лазер · фанера</span>`;
+  card.appendChild(header);
+
+  /* Body */
+  const body = document.createElement('div');
+  body.className = 'card-body';
+
+  /* Description */
+  const desc = document.createElement('p');
+  desc.style.cssText = 'font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;';
+  desc.textContent = p.desc;
+  body.appendChild(desc);
+
+  /* Reference images */
+  if (p.refs && p.refs.length) {
+    const refsDiv = document.createElement('div');
+    refsDiv.className = 'refs';
+    p.refs.forEach(r => {
+      const img = document.createElement('img');
+      img.src = r.src;
+      img.alt = r.alt;
+      img.title = r.alt;
+      img.loading = 'lazy';
+      /* Commons page URLs → swap to raw when possible; fallback to original */
+      img.onerror = function() {
+        /* If a wiki page URL fails as img src, hide it gracefully */
+        this.style.display = 'none';
+      };
+      refsDiv.appendChild(img);
+    });
+    body.appendChild(refsDiv);
+  }
+
+  /* Prompt */
+  const promptDiv = document.createElement('div');
+  promptDiv.className = 'prompt';
+  promptDiv.textContent = p.prompt;
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.textContent = '📋 Копіювати';
+  copyBtn.addEventListener('click', () => {
+    navigator.clipboard.writeText(p.prompt).then(() => {
+      copyBtn.textContent = '✅ Скопійовано';
+      copyBtn.classList.add('copied');
+      setTimeout(() => {
+        copyBtn.textContent = '📋 Копіювати';
+        copyBtn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      copyBtn.textContent = '❌ Помилка';
+      copyBtn.classList.add('failed');
+      setTimeout(() => {
+        copyBtn.textContent = '📋 Копіювати';
+        copyBtn.classList.remove('failed');
+      }, 2000);
+    });
+  });
+  promptDiv.appendChild(copyBtn);
+
+  body.appendChild(promptDiv);
+  card.appendChild(body);
+  grid.appendChild(card);
+});
+</script>
+
+</body>
+</html>
