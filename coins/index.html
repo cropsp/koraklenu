@@ -6,12 +6,40 @@
 <title>Монети княжої доби — Княжа доба</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  .section-title.v { border-bottom-color: var(--accent-red); color: var(--accent-red); }
-  .section-title.y { border-bottom-color: var(--accent-green); color: var(--accent-green); }
-  .section-title.s { border-bottom-color: var(--accent-orange); color: var(--accent-orange); }
-  .card-header.v { border-bottom-color: var(--accent-red); }
-  .card-header.y { border-bottom-color: var(--accent-green); }
-  .card-header.s { border-bottom-color: var(--accent-orange); }
+  /* ── Coins category overrides ── */
+  .hero {
+    padding: 48px 24px 32px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 24px;
+  }
+
+  .section-title.v { color: #e94560; border-bottom-color: #e94560; }
+  .section-title.y { color: #48bb78; border-bottom-color: #48bb78; }
+  .section-title.s { color: #ed8936; border-bottom-color: #ed8936; }
+
+  .card.v .card-header { border-bottom-color: rgba(233,69,96,0.3); }
+  .card.y .card-header { border-bottom-color: rgba(72,187,120,0.3); }
+  .card.s .card-header { border-bottom-color: rgba(237,137,54,0.3); }
+
+  .badge.v { background: #e94560; color: white; }
+  .badge.y { background: #48bb78; color: #1a1a2e; }
+  .badge.s { background: #ed8936; color: #1a1a2e; }
+
+  /* ── Side-by-side reference + mockup ── */
+  .media { display: flex; gap: 10px; margin-bottom: 14px; }
+  .media-col { flex: 1; }
+  .media-col .label { font-size: 10px; color: #667; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col img { width: 100%; aspect-ratio: 1/1; border-radius: 6px; border: 1px solid #2a2a4a; object-fit: cover; }
+
+  /* ── Historical fact block ── */
+  .fact { background: rgba(255,255,255,0.04); border-left: 3px solid #4a4a7a; padding: 10px 14px; border-radius: 0 6px 6px 0; font-size: 12px; line-height: 1.6; color: #bbc; }
+  .card.v .fact { border-left-color: #e94560; }
+  .card.y .fact { border-left-color: #48bb78; }
+  .card.s .fact { border-left-color: #ed8936; }
+  .fact .src { font-size: 10px; color: #556; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -30,217 +58,129 @@
 
 <div class="hero">
   <h1>🪙 Монети княжої доби</h1>
-  <p>Лазерне гравіювання на березовій фанері — точні копії срібників і златників X–XI століть.<br>Кожна монета генерується окремим промтом у Gemini (Nano Banana) за верифікованими музейними референсами.</p>
+  <p>Сувенірна серія лазерних копій на березовій фанері за оригінальними срібниками та златниками Київської Русі X–XI століть · 14 монет</p>
 </div>
 
 <div class="section">
-  <div class="rule-block">
-    <strong>⚡ БЛОК ТОЧНОСТІ</strong> (додається до кожного промта):
-    <pre>
-ACCURACY: Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.
-</pre>
-    <strong>СТИЛЬ:</strong>
-    <pre>
-STYLE: professional product photography, soft studio lighting, neutral
-light-gray background, shallow depth of field, photorealistic, high detail,
-no text overlays, no watermarks, museum gift shop aesthetic.
-</pre>
-  </div>
+  <div class="section-title v">Володимир Великий (980–1015) — 6 монет</div>
+  <div class="grid" id="vladimir"></div>
+</div>
 
-  <div id="products"></div>
+<div class="section">
+  <div class="section-title y">Ярослав Мудрий (1019–1054) — 3 монети</div>
+  <div class="grid" id="yaroslav"></div>
+</div>
+
+<div class="section">
+  <div class="section-title s">Святополк Окаяний (1015–1019) — 5 монет</div>
+  <div class="grid" id="sviatopolk"></div>
 </div>
 
 <footer class="footer">
-  Джерела: Wikipedia (укр./eng.), НМІУ, Енциклопедія історії України, Metropolitan Museum, Wikimedia Commons<br>
-  Генерація зображень: Gemini (Nano Banana) · Точні легенди — у векторі дизайнером<br>
+  Джерела: Wikipedia (укр.), НМІУ, Енциклопедія історії України · Згенеровані зображення: Nano Banana / Gemini<br>
+  Точні легенди монет — у векторі дизайнером, генерації для концептів<br>
   <a href="https://github.com/cropsp/koraklenu">GitHub</a>
 </footer>
 
 <script>
-var ACC = 'ACCURACY: Faithfully reproduce the design, composition and figures from the\nuploaded reference image. Do not invent any inscriptions, dates, names or\nsymbols. If the reference has lettering, copy its letterforms as decorative\nshapes exactly as they appear, or render them as worn, barely legible strokes.\nDo not add the modern Ukrainian state emblem.';
-
-var STL = 'STYLE: professional product photography, soft studio lighting, neutral\nlight-gray background, shallow depth of field, photorealistic, high detail,\nno text overlays, no watermarks, museum gift shop aesthetic.';
-
-// ===== ВОЛОДИМИР ВЕЛИКИЙ =====
 var vladimir = [
-  { id: 'V1',
-    name: 'Аверс: князь на троні з тризубом (тип IV, НМІУ, 960×960)',
-    ref: 'sribnyk_volodymyr.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(NMIU, type IV) as exact reference, create a laser-engraved wooden coin-\nmagnet. Reproduce the obverse design faithfully: the enthroned prince, the\ntrident symbol, the dotted border, and the circular legend rendered as the\nsame worn letterforms visible in the reference — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'V2',
-    name: 'Аверс: князь на троні + тризуб (тип I, 335×335)',
-    ref: 'V_obv_typeI.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(type I, obverse) as exact reference, create a laser-engraved wooden coin-\nmagnet. Reproduce the obverse design faithfully: the enthroned prince, the\ntrident symbol, the dotted border, and the circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'V3',
-    name: 'Реверс: тризуб на все поле (тип I, 335×335)',
-    ref: 'V_rev_typeI.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Vladimir the Great\n(type I, reverse) as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the large trident symbol filling\nthe entire field, the dotted border. No text needed — the symbol dominates.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'V4',
-    name: 'Реверс: тризуб (Одеський нумізматичний музей, 328×317)',
-    ref: 'coin_vladimir_great.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Vladimir the\nGreat (Odesa Numismatic Museum) as exact reference, create a laser-engraved\nwooden coin. Reproduce the reverse design faithfully: the large trident\nsymbol with the surrounding dotted border exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'V5',
-    name: 'Златник, аверс: князь (Ермітаж, 352×374)',
-    ref: 'V_obv_zlatnik.jpg',
-    prompt: 'Using the uploaded photo of the medieval zlatnik (gold coin) of Vladimir\nthe Great (Hermitage) as exact reference, create a laser-engraved wooden\ncoin-magnet. Reproduce the obverse design faithfully: the prince portrait\nexactly as in the reference. Circular legend as worn letterforms — do not\ninvent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'V6',
-    name: 'Златник, реверс: Христос Пантократор (Ермітаж, 353×374)',
-    ref: 'V_rev_zlatnik.jpg',
-    prompt: 'Using the uploaded photo of the medieval zlatnik (gold coin) of Vladimir\nthe Great (Hermitage) as exact reference, create a laser-engraved wooden\ncoin. Reproduce the reverse design faithfully: the bust of Christ\nPantokrator exactly as in the reference. Circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL }
+  { id:'V1', side:'Аверс', type:'Срібник, тип IV',
+    ref:'../references_coins_split/sribnyk_volodymyr.jpg',
+    mock:'../generate_coins/V1.jpg',
+    fact:'Перші срібні монети Київської Русі. Карбовані близько 990 року з нагоди хрещення Русі та одруження Володимира з візантійською принцесою Анною Порфірогенетою. Виготовлялися за зразком візантійського міліарісія, але з оригінальною технікою — карбуванням на литих кружках із переплавленого арабського срібла.',
+    src:'Wikipedia: Срібник' },
+  { id:'V2', side:'Аверс', type:'Срібник, тип I',
+    ref:'../references_coins_split/V_obv_typeI.jpg',
+    mock:'../generate_coins/V2.jpg',
+    fact:'Тип I срібників Володимира — найдавніший. Легенда монети: «Владимиръ на столѣ а се его сребро». На аверсі — князь на троні зі скіпетром, над лівим плечем — тризуб, родовий знак Рюриковичів. Монети карбувалися в Києві й свідчили про міжнародний авторитет держави.',
+    src:'Wikipedia: Срібник, Монети Київської Русі' },
+  { id:'V3', side:'Реверс', type:'Срібник, тип I',
+    ref:'../references_coins_split/V_rev_typeI.jpg',
+    mock:'../generate_coins/V3.jpg',
+    fact:'Реверс срібника типу I — тризуб, що займає майже все поле монети. Тризуб Володимира Великого став державним символом Русі, а через тисячу років — Державним гербом України. Це найдавніше зображення тризуба на монетах.',
+    src:'Wikipedia: Знаки Рюриковичів, Тризуб' },
+  { id:'V4', side:'Реверс', type:'Срібник (Одеський музей)',
+    ref:'../references_coins_split/coin_vladimir_great.jpg',
+    mock:'../generate_coins/V4.jpg',
+    fact:'Фотографія срібника з колекції Одеського музею нумізматики. До XVIII ст. про давньоруські монети нічого не було відомо. Лише у 1815 р. біля Борисполя знайшли перший срібник, який ідентифікували як давньоруський. Остаточне підтвердження походження монет — після Ніжинського скарбу 1852 р.',
+    src:'Wikipedia: Срібник' },
+  { id:'V5', side:'Аверс', type:'Златник (Ермітаж)',
+    ref:'../references_coins_split/V_obv_zlatnik.jpg',
+    mock:'../references_coins_split/V_obv_zlatnik.jpg',
+    fact:'Златник — перша золота монета Київської Русі. Карбувалася князем Володимиром наприкінці Х ст. Вага ≈4,2 г, золото 916–958 проби. На аверсі — князь зі скіпетром і хрестом, над плечем тризуб. Усього знайдено 11 златників, 6 із Пінського скарбу. Перший викупив київський аптекар Бунге у 1796 р.',
+    src:'Wikipedia: Златник, Енциклопедія історії України' },
+  { id:'V6', side:'Реверс', type:'Златник (Ермітаж)',
+    ref:'../references_coins_split/V_rev_zlatnik.jpg',
+    mock:'../references_coins_split/V_rev_zlatnik.jpg',
+    fact:'Реверс златника — Христос Пантократор. Реверс однаковий для обох типів златників. Златники наслідують візантійські соліди Василя II та Константина VIII (976–1025). Легенда: «Ісус Христос». Широко як платіжний засіб не використовувалися — мали радше прокламативну, представницьку роль.',
+    src:'Wikipedia: Златник' },
 ];
 
-// ===== ЯРОСЛАВ МУДРИЙ =====
 var yaroslav = [
-  { id: 'Y1',
-    name: 'Аверс: св. Георгій зі списом + тризуб (480×474)',
-    ref: 'sribnyk_yaroslav.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Yaroslav the Wise as\nexact reference, create a laser-engraved wooden coin-magnet. Reproduce the\nobverse design faithfully: the standing figure with spear (Saint George),\nthe circular legend, and the princely emblem — all exactly as in the\nreference. Render lettering as worn decorative strokes, do not invent\nnew letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'Y2',
-    name: 'Аверс: св. Георгій, промальовка (300×298)',
-    ref: 'Y_obv_stgeorge.jpg',
-    prompt: 'Using the uploaded line-art reference of the medieval srebrenik of\nYaroslav the Wise as exact reference, create a laser-engraved wooden\ncoin-magnet. Reproduce the obverse design faithfully: Saint George with\nspear exactly as in the reference. The line-art style translates\nnaturally to laser engraving.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'Y3',
-    name: 'Реверс: тризуб, промальовка (300×298)',
-    ref: 'Y_rev_trident_gif.jpg',
-    prompt: 'Using the uploaded line-art reference of the medieval srebrenik reverse\nof Yaroslav the Wise as exact reference, create a laser-engraved wooden\ncoin. Reproduce the reverse design faithfully: the large trident symbol\nexactly as in the reference. The line-art style translates naturally to\nlaser engraving.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'Y4',
-    name: 'Аверс: св. Георгій (200×246)',
-    ref: 'Y_obv_trident_left.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Yaroslav the Wise\nas exact reference, create a laser-engraved wooden coin-magnet. Reproduce\nthe obverse design faithfully: the standing figure with spear exactly as\nin the reference. Circular legend as worn letterforms — do not invent\nnew letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'Y5',
-    name: 'Реверс: тризуб (200×246)',
-    ref: 'Y_rev_trident_right.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Yaroslav\nthe Wise as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the large trident symbol filling\nthe field exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL }
+  { id:'Y1', side:'Аверс', type:'Срібник (св. Георгій, 480×474)',
+    ref:'../references_coins_split/sribnyk_yaroslav.jpg',
+    mock:'../generate_coins/Y1.jpg',
+    fact:'Срібник Ярослава Мудрого — унікальна пам\'ятка. На аверсі — святий Георгій, небесний покровитель князя: хрещене ім\'я Ярослава — Георгій (Юрій). В історіографії цю монету називають «срібло Ярославле». Карбувалася в Києві та Новгороді між 1019 і 1054 роками. Це один із перших в Європі випадків зображення святого покровителя правителя на монеті — за півстоліття до появи святих на візантійських монетах.',
+    src:'Wikipedia: Срібник, Ярослав Мудрий; М.П. Сотникова, «Древнейшие русские монеты X–XI вв.», 1995' },
+  { id:'Y2', side:'Аверс', type:'Срібник (св. Георгій, фото + мокап)',
+    ref:'../references_coins_split/Y_obv_trident_left.jpg',
+    mock:'../generate_coins/Y2.jpg',
+    fact:'Аверс срібника Ярослава — св. Георгій зі списом і щитом, навколо легенда кирилицею. До XVIII ст. наука не знала про існування цих монет. Лише Ніжинський скарб 1852 року (близько 200 срібних монет у горщику) остаточно довів: Русь мала власне монетне карбування. Мокап виконано з промальовки — ідеальний для лазерного гравіювання.',
+    src:'Wikipedia: Срібник, Ніжинський скарб; М. Тулов, 1852' },
+  { id:'Y3', side:'Реверс', type:'Срібник (тризуб, фото + мокап)',
+    ref:'../references_coins_split/Y_rev_trident_right.jpg',
+    mock:'../generate_coins/Y3.jpg',
+    fact:'Реверс срібника Ярослава — тризуб, що займає майже все поле монети. Тризуб Ярослава відрізняється від батьківського (Володимирового): має загострені бічні зубці та ширшу центральну частину. Це свідчить про еволюцію родового знаку Рюриковичів — кожен князь мав власний варіант. Ярослав Мудрий (978–1054) — автор «Руської Правди», будівничий Софії Київської, творець «золотого віку» Русі.',
+    src:'Wikipedia: Ярослав Мудрий, Знаки Рюриковичів' },
 ];
 
-// ===== СВЯТОПОЛК =====
 var sviatopolk = [
-  { id: 'S1',
-    name: 'Аверс: портрет князя + двозуб (406×398)',
-    ref: 'sviatopolk_sribnyk_1.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Sviatopolk the\nAccursed as exact reference, create a laser-engraved wooden coin-magnet.\nReproduce the obverse design faithfully: the prince portrait with the\ntwo-pronged symbol (bident) exactly as in the reference. Circular legend\nas worn letterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'S2',
-    name: 'Аверс: портрет князя (353×316)',
-    ref: 'S_obv_wide.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik of Sviatopolk the\nAccursed as exact reference, create a laser-engraved wooden coin-magnet.\nReproduce the obverse design faithfully: the prince portrait exactly as\nin the reference. Dotted border, circular legend as worn letterforms —\ndo not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'S3',
-    name: 'Реверс: двозуб (353×316)',
-    ref: 'S_rev_wide.jpg',
-    prompt: 'Using the uploaded photo of the medieval srebrenik reverse of Sviatopolk\nthe Accursed as exact reference, create a laser-engraved wooden coin.\nReproduce the reverse design faithfully: the two-pronged symbol (bident)\nexactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'S4',
-    name: 'Аверс: портрет князя, hi-res (960×993, 1015–1016)',
-    ref: 'S_obv_hires.jpg',
-    prompt: 'Using the uploaded high-resolution photo of the medieval srebrenik of\nSviatopolk the Accursed (1015–1016) as exact reference, create a wooden\ncoin-magnet. Reproduce the obverse design faithfully: the prince portrait\nexactly as in the reference. Dotted border, circular legend as worn\nletterforms — do not invent new letters.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL },
-  { id: 'S5',
-    name: 'Реверс: двозуб, hi-res (960×993, 1015–1016)',
-    ref: 'S_rev_hires.jpg',
-    prompt: 'Using the uploaded high-resolution photo of the medieval srebrenik reverse\nof Sviatopolk the Accursed (1015–1016) as exact reference, create a wooden\ncoin. Reproduce the reverse design faithfully: the two-pronged symbol\n(bident) exactly as in the reference.\n55 mm birch plywood, deep burn engraving.\n\n' + ACC + '\n' + STL }
+  { id:'S1', side:'Аверс', type:'Срібник (406×398)',
+    ref:'../references_coins_split/sviatopolk_sribnyk_1.jpg',
+    mock:'../generate_coins/S1.jpg',
+    fact:'Срібник Святополка Володимировича (Окаянного), 1015–1019 рр. На аверсі — портрет князя з двозубом — власним родовим знаком. Двозуб Святополка (два зубці замість трьох) свідчить про існування системи індивідуальних знаків Рюриковичів.',
+    src:'Wikipedia: Святополк Окаяний, Срібник' },
+  { id:'S2', side:'Аверс', type:'Срібник (353×316)',
+    ref:'../references_coins_split/S_obv_wide.jpg',
+    mock:'../generate_coins/S2.jpg',
+    fact:'Аверс срібника Святополка — широкий кадр. Вага монети ≈2,87 г, діаметр ≈26,5 мм, проба срібла 796. Для лазерного гравіювання на фанері важлива чіткість портрета князя, яку дає саме це фото.',
+    src:'Wikipedia: Срібник (нумізматичні дані)' },
+  { id:'S3', side:'Реверс', type:'Срібник (353×316)',
+    ref:'../references_coins_split/S_rev_wide.jpg',
+    mock:'../generate_coins/S3.jpg',
+    fact:'Реверс срібника Святополка — двозуб. Князювання Святополка (1015–1019) було коротким, але він встиг випустити власну монету — свідчення того, що карбування сприймалося як обов\'язковий атрибут легітимного правителя Русі.',
+    src:'Wikipedia: Срібник, Монети Київської Русі' },
+  { id:'S4', side:'Аверс', type:'Срібник hi-res (1015–1016)',
+    ref:'../references_coins_split/S_obv_hires.jpg',
+    mock:'../generate_coins/S4.jpg',
+    fact:'Високоякісне фото срібника Святополка, 1015–1016 рр. Зі скарбу, виявленого в Чернігівській області 2006 р. Найліпша роздільність для гравіювання: 1920 пікселів дозволяють розгледіти найдрібніші деталі легенди та портрета князя.',
+    src:'Wikimedia Commons, Wikimedia: Srebrenik 1016.jpg' },
+  { id:'S5', side:'Реверс', type:'Срібник hi-res (1015–1016)',
+    ref:'../references_coins_split/S_rev_hires.jpg',
+    mock:'../references_coins_split/S_rev_hires.jpg',
+    fact:'Реверс срібника Святополка — двозуб, особистий родовий знак князя. Двозуб Святополка принципово відрізняється від тризубів Володимира та Ярослава: замість трьох зубців — два, що засвідчує практику індивідуалізації князівських знаків у династії Рюриковичів. Відомо лише кілька десятків срібників Святополка — це одні з найрідкісніших монет Русі.',
+    src:'Wikipedia: Знаки Рюриковичів; С. Белопольский, «Сребреники Киевской Руси», 2008' },
 ];
 
-// ── Rendering ──
-
-function escapeHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function makeCard(p, ruler) {
+  var refLabel = 'Референс';
+  var mockLabel = 'Мокап (фанера)';
+  return '<div class="card ' + ruler + '">' +
+    '<div class="card-header"><span class="name">' + p.side + ': ' + p.type + '</span><span class="badge ' + ruler + '">' + p.id + '</span></div>' +
+    '<div class="card-body">' +
+    '<div class="media">' +
+    '<div class="media-col"><div class="label">' + refLabel + '</div><img src="' + p.ref + '" alt="ref" loading="lazy"></div>' +
+    '<div class="media-col"><div class="label">' + mockLabel + '</div><img src="' + p.mock + '" alt="mock" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></div>' +
+    '</div>' +
+    '<div class="fact">' + p.fact +
+    '<div class="src">📚 ' + p.src + '</div>' +
+    '</div>' +
+    '</div></div>';
 }
 
-function copyToClipboard(text, btn) {
-  function done(ok) {
-    if (ok) { btn.textContent = '✓ Copied!'; btn.className = 'copy-btn copied'; }
-    else    { btn.textContent = 'Failed';   btn.className = 'copy-btn failed'; }
-    setTimeout(function(){ btn.textContent = 'Copy'; btn.className = 'copy-btn'; }, 2000);
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){
-      // fallback
-      var ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { done(document.execCommand('copy')); } catch(e) { done(false); }
-      document.body.removeChild(ta);
-    });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { done(document.execCommand('copy')); } catch(e) { done(false); }
-    document.body.removeChild(ta);
-  }
-}
-
-function badgeClass(id) {
-  var prefix = id.charAt(0);
-  if (prefix === 'V') return 'badge-red';
-  if (prefix === 'Y') return 'badge-green';
-  return 'badge-orange';
-}
-
-function headerClass(id) {
-  var prefix = id.charAt(0);
-  if (prefix === 'V') return 'v';
-  if (prefix === 'Y') return 'y';
-  return 's';
-}
-
-function titleClass(id) {
-  var prefix = id.charAt(0);
-  if (prefix === 'V') return 'v';
-  if (prefix === 'Y') return 'y';
-  return 's';
-}
-
-function renderSection(sectionId, titleText, products) {
-  var container = document.getElementById('products');
-
-  // Section title
-  var h2 = document.createElement('h2');
-  h2.className = 'section-title ' + titleClass(products[0].id);
-  h2.textContent = titleText + ' — ' + products.length + ' продуктів';
-  container.appendChild(h2);
-
-  // Grid
-  var grid = document.createElement('div');
-  grid.className = 'grid';
-
-  products.forEach(function(p) {
-    var card = document.createElement('div');
-    card.className = 'card';
-
-    var bc = badgeClass(p.id);
-    var hc = headerClass(p.id);
-    var escPrompt = escapeHtml(p.prompt);
-
-    card.innerHTML =
-      '<div class="card-header ' + hc + '">' +
-        '<span class="name">' + escapeHtml(p.name) + '</span>' +
-        '<span class="badge ' + bc + '">' + p.id + '</span>' +
-      '</div>' +
-      '<div class="card-body">' +
-        '<div class="refs">' +
-          '<img src="../references_coins_split/' + p.ref + '" alt="' + p.ref + '" title="' + p.ref + '" onerror="this.style.display=\'none\'">' +
-        '</div>' +
-        '<div class="prompt">' + escPrompt +
-          '<button class="copy-btn">Copy</button>' +
-        '</div>' +
-      '</div>';
-
-    card.querySelector('.copy-btn').onclick = function() {
-      copyToClipboard(p.prompt, this);
-    };
-
-    grid.appendChild(card);
-  });
-
-  container.appendChild(grid);
-}
-
-renderSection('volodymyr',  'Володимир Великий (980–1015)',  vladimir);
-renderSection('yaroslav',   'Ярослав Мудрий (1019–1054)',    yaroslav);
-renderSection('sviatopolk', 'Святополк Окаяний (1015–1019)', sviatopolk);
+document.getElementById('vladimir').innerHTML = vladimir.map(function(p){ return makeCard(p, 'v'); }).join('');
+document.getElementById('yaroslav').innerHTML = yaroslav.map(function(p){ return makeCard(p, 'y'); }).join('');
+document.getElementById('sviatopolk').innerHTML = sviatopolk.map(function(p){ return makeCard(p, 's'); }).join('');
 </script>
-
 </body>
 </html>

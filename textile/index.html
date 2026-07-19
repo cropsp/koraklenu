@@ -7,22 +7,57 @@
 <link rel="stylesheet" href="../css/style.css">
 <style>
   /* ── Textile category overrides ── */
-  :root {
-    --cat-accent: var(--accent-blue);
-    --cat-accent-dim: rgba(66,99,235,0.3);
-  }
   .hero { background: linear-gradient(135deg, #1a1a2e 0%, #14162e 50%, #0f1640 100%); }
   .hero h1 { color: var(--accent-blue); }
-  .rule-block { border-color: var(--cat-accent-dim); }
-  .rule-block h3 { color: var(--accent-blue); font-size: 13px; margin-bottom: 6px; }
 
   .section-title { color: var(--accent-blue); border-bottom-color: var(--accent-blue); }
 
-  .card .badge { background: var(--accent-blue); color: white; }
-  .card .name { color: var(--accent-blue); }
+  .card .card-header { border-bottom-color: rgba(66,99,235,0.25); }
+  .card-header .badge { background: var(--accent-blue); color: white; }
+  .card-header .name { color: var(--accent-blue); }
 
-  .rule-note { margin-top: 12px; color: var(--text-muted); font-size: 11px; line-height: 1.6; }
-  .rule-note code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 3px; }
+  .fact { border-left-color: var(--accent-blue) !important; }
+
+  /* ── Side-by-side media (ref left, mockup right) ── */
+  .media { display: flex; gap: 10px; margin-bottom: 14px; }
+  .media-col { flex: 1; min-width: 0; }
+  .media-col .label { font-size: 10px; color: #667; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col img {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px solid #2a2a4a;
+    object-fit: cover;
+  }
+  /* Multiple refs stacked */
+  .media-col .ref-stack { display: flex; flex-direction: column; gap: 6px; height: 100%; }
+  .media-col .ref-stack img { aspect-ratio: auto; height: calc(50% - 3px); }
+
+  /* ── Placeholder (no generated image yet) ── */
+  .placeholder {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px dashed #2a2a4a;
+    background: linear-gradient(135deg, rgba(66,99,235,0.05) 0%, rgba(66,99,235,0.02) 100%);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: #334; font-size: 40px;
+  }
+  .placeholder span { font-size: 10px; color: #445; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* ── Fact block ── */
+  .fact {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid #4a4a7a;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px; line-height: 1.6; color: #bbc;
+  }
+  .fact .src { font-size: 10px; color: #556; margin-top: 4px; }
+
+  /* ── Responsive ── */
+  @media (max-width: 500px) {
+    .media { flex-direction: column; }
+    .media-col .ref-stack { flex-direction: row; }
+    .media-col .ref-stack img { height: auto; width: calc(50% - 3px); aspect-ratio: 1/1; }
+  }
 </style>
 </head>
 <body>
@@ -41,28 +76,11 @@
 
 <div class="hero">
   <h1>👕 Текстиль — принти</h1>
-  <p>Шовкографія на бавовні — футболки, тоут-бег, бандана<br>за мотивами срібників, мозаїк, рукописів та прикрас Київської Русі X–XIII століть</p>
+  <p>Шовкографія та цифровий друк на бавовні — футболки, тоут-бег, бандана<br>за мотивами срібників, мозаїк, рукописів та ювелірних прикрас Київської Русі X–XIII століть</p>
 </div>
 
-<div class="section" id="products">
-  <!-- ── Rule block ── -->
-  <div class="rule-block">
-    <h3>📐 ACCURACY — блок точності (додається до кожного промта)</h3>
-    <pre>ACCURACY: Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.</pre>
-
-    <p class="rule-note">
-      ⚠️ Для більшості текстильних продуктів стильовий блок (STYLE) <strong>не додається</strong> — модель сама визначає композицію за описом у промті.<br>
-      Виняток: <strong>В3 (Тоут-бег)</strong> — використовує стандартний студійний STYLE-блок;<br>
-      <strong>В4 (Бандана)</strong> — використовує флет-лей STYLE: <code>flat lay, top-down view.</code>
-    </p>
-  </div>
-
-  <!-- ── Product grid rendered by JS ── -->
-  <h2 class="section-title" style="margin-top:20px;">Вироби</h2>
+<div class="section">
+  <h2 class="section-title">Вироби</h2>
   <div class="grid" id="productGrid"></div>
 </div>
 
@@ -73,66 +91,58 @@ Do not add the modern Ukrainian state emblem.</pre>
 </footer>
 
 <script>
-/* ═══════════════════════════════════════════
-   Textile Prints — продуктова вітрина
-   ═══════════════════════════════════════════ */
-
-var ACC = 'ACCURACY: Faithfully reproduce the design, composition and figures from the\nuploaded reference image. Do not invent any inscriptions, dates, names or\nsymbols. If the reference has lettering, copy its letterforms as decorative\nshapes exactly as they appear, or render them as worn, barely legible strokes.\nDo not add the modern Ukrainian state emblem.';
-
-var STL = 'STYLE: professional product photography, soft studio lighting, neutral\nlight-gray background, shallow depth of field, photorealistic, high detail,\nno text overlays, no watermarks, museum gift shop aesthetic.';
-
 var products = [
   {
     id: "В1",
     name: "Футболка «Срібник»",
-    desc: "Пісочна бавовняна футболка на дерев'яному вішаку. Великий центрований принт темно-коричневим — дизайн срібника Володимира: князь на троні, тризуб, точкове обрамлення, легенда як стерті літери. Вінтажна потерта текстура штампа.",
     refs: [
-      { src: "https://assets.museum-digital.org/ua-kyiv/images/18/12777-au-744/_v____/v---12777-685094.jpg", alt: "Срібник Володимира, тип IV (НМІУ)" }
+      { src: "../references_coins_split/sribnyk_volodymyr.jpg", alt: "Срібник Володимира Великого, тип IV (НМІУ)" }
     ],
-    technique: "Шовкографія · бавовна",
-    prompt: 'Using the uploaded photo of the medieval srebrenik coin as exact reference,\ncreate a sand-colored cotton t-shirt on a wooden hanger against a white brick\nwall. Large centered screen print in dark brown reproducing the coin design\nfaithfully: the same seated prince, the same trident, the same dotted border,\nand the circular legend rendered as the same worn letterforms visible in the\nreference — do not invent any new text, names or dates. Distressed vintage\nstamp texture.\n\n' + ACC
+    placeholder: "👕",
+    fact: 'Срібник Володимира Великого (тип IV) — одна з перших срібних монет Київської Русі, карбованих близько 990 року. На аверсі зображено князя на троні зі скіпетром і тризубом над лівим плечем. Легенда: «Владимиръ на столѣ а се его сребро». Пісочний колір футболки відсилає до природного тону невибіленої бавовни, а дистресована текстура імітує патину часу — так само як срібник пережив понад тисячу років у землі.',
+    src: "Wikipedia: Срібник; НМІУ, інв. АЗС-744"
   },
   {
     id: "В2",
     name: "Футболка «Оранта»",
-    desc: "Чорна преміальна футболка, флет-лей. Малий нагрудний принт: постать Оранти з піднятими руками, відтворена мозаїчними квадратиками-тесерами в золоті та глибокому синьому. Мінімалізм, багато порожнього простору.",
     refs: [
-      { src: "https://commons.wikimedia.org/wiki/File:Oranta-Kyiv.jpg", alt: "Оранта, Софія Київська (мозаїка)" }
+      { src: "https://commons.wikimedia.org/wiki/File:Oranta-Kyiv.jpg", alt: "Оранта, мозаїка Софії Київської (XI ст.)" }
     ],
-    technique: "Шовкографія · бавовна",
-    prompt: 'Using the uploaded mosaic photo as reference, create a black premium t-shirt\nflat lay with a small chest print: the standing figure with raised hands\nreproduced from the reference, built from visible mosaic tesserae squares in\ngold and deep blue. Minimalist, lots of empty space.\n\n' + ACC
+    placeholder: "👕",
+    fact: 'Оранта — центральний образ мозаїки Софії Київської (1043–1046 рр.), Богородиця з піднятими в молитві руками, заввишки 5,45 м. Виконана зі смальти — шматочків кольорового непрозорого скла на золотому тлі. Це найдавніше монументальне зображення Богородиці в Україні. Малий нагрудний принт квадратиками-тесерами відтворює саму техніку мозаїки — видимі шматочки смальти як художній прийом.',
+    src: "Wikipedia: Софійський собор, Оранта; Wikimedia Commons"
   },
   {
     id: "В3",
     name: "Тоут-бег із патерном",
-    desc: "Натуральна бавовняна сумка-шопер, вся лицьова сторона вкрита безшовним повторюваним орнаментом-плетінкою з Остромирового Євангелія, надрукованим одним глибоким теракотовим кольором.",
     refs: [
-      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Остромирове Євангеліє — сторінка із заставкою" },
-      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — орнамент плетінки" }
+      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Остромирове Євангеліє — заставка з плетеним орнаментом (1056–1057)" },
+      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — аркові панелі з орнаментом" }
     ],
-    technique: "Шовкографія · бавовна",
-    prompt: 'Using the uploaded references for ornament style, create a natural cotton\ncanvas tote bag whose entire front is covered with a seamless repeating\ninterlace pattern derived from the manuscript headpiece ornament in the\nreference, printed in a single deep terracotta color.\n\n' + ACC + '\n\n' + STL
+    placeholder: "👜",
+    fact: 'Остромирове Євангеліє (1056–1057) — найдавніша точно датована східнослов\'янська рукописна книга. Створена дияконом Григорієм для новгородського посадника Остромира. Її заставки та ініціали прикрашені плетеним орнаментом візантійсько-руського стилю — характерним для всієї книжкової культури Русі XI ст. Безшовний повторюваний рапорт на тоуті перетворює сумку на полотно, що цитує книжкову мініатюру.',
+    src: "Wikipedia: Остромирове Євангеліє; РНБ, F.п.I.5"
   },
   {
     id: "В4",
     name: "Бандана «Русалії»",
-    desc: "Квадратна бавовняна бандана з бордюрною композицією: по периметру — аркові панелі з фігурами танцівників, музикантів і грифонів із браслетів-наручів, темним індиго на екрю. У центрі — одиночний медальйон із плетінки.",
     refs: [
       { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — аркові панелі з грифонами" },
-      { src: "https://spadok.org.ua/images/braslety-naruchni/braslet-naruch-kudryavskyi-skarb.jpg", alt: "Браслет-наруч, Кудрявський скарб — воїн і хижак" }
+      { src: "https://spadok.org.ua/images/braslety-naruchni/braslet-naruch-kudryavskyi-skarb.jpg", alt: "Браслет-наруч, Кудрявський скарб — танцівники й музики" }
     ],
-    technique: "Цифровий друк · бавовна",
-    prompt: 'Using the uploaded bracelet photos as reference, create a square cotton\nbandana printed with a border composition: around the perimeter run the same\narched panels with figures reproduced from the references — dancers,\nmusicians, griffins — in dark indigo on off-white. A single interlace\nmedallion in the center.\n\n' + ACC + '\n\nSTYLE: flat lay, top-down view.'
+    placeholder: "🧣",
+    fact: 'Срібні браслети-наручі XII–XIII ст. — характерна прикраса давньоруської знаті. Їхні стулки прикрашалися карбованими арковими панелями з фігурами танцівників, музик, грифонів та птахів — сюжети, пов\'язані з русаліями, давнім весняним святом. Кудрявський скарб (знайдений у Києві) містить одні з найкраще збережених наручів. Бордюрна композиція бандани відтворює сам принцип побудови декору на браслетах.',
+    src: "Wikipedia: Давньоруські прикраси; СпАДОК; Кудрявський скарб"
   },
   {
     id: "В5",
     name: "Дитяча футболка «Сирин»",
-    desc: "Маленька дитяча футболка гірчично-жовтого кольору з дружньою ілюстрацією птаха-сирина в стилі дитячої книжки: усміхнений птах із людським обличчям і маленьким німбом, спрощені форми, теплі кольори. Флет-лей з дерев'яними іграшками.",
     refs: [
-      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg", alt: "Колт: два сирини + дерево життя (Met, DT11967)" }
+      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg", alt: "Золотий колт із сиринами, Metropolitan Museum (DT11967)" }
     ],
-    technique: "Цифровий друк · бавовна",
-    prompt: 'Using the uploaded kolt photo as reference, create a small child-size\nmustard-yellow t-shirt with a friendly storybook-style illustration of the\nsirin bird from the reference — a smiling bird with a human face and little\nhalo, simplified shapes, warm colors, keeping the recognizable silhouette\nfrom the reference. Flat lay with wooden toys.\n\n' + ACC
+    placeholder: "👕",
+    fact: 'Сирин — міфологічний райський птах із головою діви, поширений образ у мистецтві Київської Русі. Запозичений із візантійської традиції (грецькі сирени), на руських колтах XI–XIII ст. сирини зображалися в парі обабіч «дерева життя». Золотий колт із колекції Metropolitan Museum — рідкісний зразок із двома сиринами. Дитяча футболка перетворює середньовічний образ на дружню ілюстрацію, зберігаючи впізнаваний силует.',
+    src: "Metropolitan Museum of Art; Wikipedia: Сирин, Колт"
   }
 ];
 
@@ -146,70 +156,75 @@ products.forEach(function(p) {
   /* Header */
   var header = document.createElement('div');
   header.className = 'card-header';
-  header.innerHTML = '<span class="name">' + p.id + '. ' + escapeHtml(p.name) + '</span><span class="badge">' + escapeHtml(p.technique) + '</span>';
+  header.innerHTML = '<span class="name">' + p.id + '. ' + esc(p.name) + '</span><span class="badge">Бавовна · принт</span>';
   card.appendChild(header);
 
   /* Body */
   var body = document.createElement('div');
   body.className = 'card-body';
 
-  /* Description */
-  var desc = document.createElement('p');
-  desc.style.cssText = 'font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;';
-  desc.textContent = p.desc;
-  body.appendChild(desc);
+  /* Side-by-side media */
+  var media = document.createElement('div');
+  media.className = 'media';
 
-  /* Reference images */
-  if (p.refs && p.refs.length) {
-    var refsDiv = document.createElement('div');
-    refsDiv.className = 'refs';
+  /* Left: reference images */
+  var refCol = document.createElement('div');
+  refCol.className = 'media-col';
+  var refLabel = document.createElement('div');
+  refLabel.className = 'label';
+  refLabel.textContent = 'Референс';
+  refCol.appendChild(refLabel);
+
+  if (p.refs.length === 1) {
+    var img = document.createElement('img');
+    img.src = p.refs[0].src;
+    img.alt = p.refs[0].alt;
+    img.title = p.refs[0].alt;
+    img.loading = 'lazy';
+    img.onerror = function() { this.style.display = 'none'; };
+    refCol.appendChild(img);
+  } else {
+    var stack = document.createElement('div');
+    stack.className = 'ref-stack';
     p.refs.forEach(function(r) {
       var img = document.createElement('img');
       img.src = r.src;
       img.alt = r.alt;
       img.title = r.alt;
       img.loading = 'lazy';
-      img.onerror = function() {
-        this.style.display = 'none';
-      };
-      refsDiv.appendChild(img);
+      img.onerror = function() { this.style.display = 'none'; };
+      stack.appendChild(img);
     });
-    body.appendChild(refsDiv);
+    refCol.appendChild(stack);
   }
+  media.appendChild(refCol);
 
-  /* Prompt */
-  var promptDiv = document.createElement('div');
-  promptDiv.className = 'prompt';
-  promptDiv.textContent = p.prompt;
+  /* Right: placeholder */
+  var mockCol = document.createElement('div');
+  mockCol.className = 'media-col';
+  var mockLabel = document.createElement('div');
+  mockLabel.className = 'label';
+  mockLabel.textContent = 'Концепт';
+  mockCol.appendChild(mockLabel);
+  var ph = document.createElement('div');
+  ph.className = 'placeholder';
+  ph.innerHTML = p.placeholder + '<span>генерується</span>';
+  mockCol.appendChild(ph);
+  media.appendChild(mockCol);
 
-  var copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.textContent = '📋 Копіювати';
-  copyBtn.addEventListener('click', function() {
-    navigator.clipboard.writeText(p.prompt).then(function() {
-      copyBtn.textContent = '✅ Скопійовано';
-      copyBtn.classList.add('copied');
-      setTimeout(function() {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    }).catch(function() {
-      copyBtn.textContent = '❌ Помилка';
-      copyBtn.classList.add('failed');
-      setTimeout(function() {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('failed');
-      }, 2000);
-    });
-  });
-  promptDiv.appendChild(copyBtn);
+  body.appendChild(media);
 
-  body.appendChild(promptDiv);
+  /* Fact */
+  var fact = document.createElement('div');
+  fact.className = 'fact';
+  fact.innerHTML = p.fact + '<div class="src">📚 ' + esc(p.src) + '</div>';
+  body.appendChild(fact);
+
   card.appendChild(body);
   grid.appendChild(card);
 });
 
-function escapeHtml(s) {
+function esc(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 </script>

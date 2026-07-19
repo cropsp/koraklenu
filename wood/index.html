@@ -6,26 +6,141 @@
 <title>Лазер по дереву — Княжа доба</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  /* ── Wood category overrides ── */
-  :root {
-    --cat-accent: var(--accent-gold);
-    --cat-accent-dim: rgba(212,168,67,0.3);
+  /* ── Hero accent override ── */
+  .hero-accent { color: var(--accent-gold); }
+
+  /* ── Intro ── */
+  .intro {
+    max-width: 700px; margin: 0 auto 36px;
+    text-align: center; color: var(--text-muted);
+    font-size: 14px; line-height: 1.7;
   }
-  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1e1a14 50%, #2a2018 100%); }
-  .hero h1 { color: var(--accent-gold); }
-  .rule-block { border-color: var(--cat-accent-dim); }
-  .rule-block h3 { color: var(--accent-gold); font-size: 13px; margin-bottom: 6px; }
+  .intro strong { color: var(--accent-gold); }
 
-  .section-title { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
+  /* ── Product grid ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    gap: 24px;
+  }
 
-  .card .badge { background: var(--accent-gold); color: #1a1a2e; }
-  .card .name { color: var(--accent-gold); }
+  /* ── Product card ── */
+  .product-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .product-card:hover { border-color: var(--accent-gold); }
 
-  .empty-state { text-align: center; color: var(--text-dim); padding: 40px; font-size: 14px; }
+  .product-card-top {
+    display: flex;
+    gap: 0;
+    min-height: 200px;
+  }
+
+  /* ── Left: reference images ── */
+  .card-refs {
+    flex: 0 0 48%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    overflow: hidden;
+  }
+  .card-refs img {
+    width: 100%;
+    height: auto;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .card-refs img:hover {
+    transform: scale(2.2);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
+  .card-refs .ref-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── Right: placeholder ── */
+  .card-placeholder {
+    flex: 1;
+    margin: 12px 12px 12px 0;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 12px;
+    text-align: center;
+    padding: 16px;
+  }
+  .card-placeholder .ph-icon {
+    font-size: 36px;
+    opacity: 0.5;
+  }
+
+  /* ── Bottom: info ── */
+  .product-card-bottom {
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+  }
+  .product-card-bottom .product-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .product-card-bottom .product-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-bottom: 10px;
+  }
+  .product-card-bottom .product-badge {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    background: var(--accent-gold);
+    color: #1a1a2e;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 560px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .product-card-top { flex-direction: column; }
+    .card-refs {
+      flex: auto;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .card-refs img {
+      width: 48%;
+      max-height: 100px;
+    }
+    .card-placeholder { margin: 0 12px 12px; min-height: 120px; }
+  }
 </style>
 </head>
 <body>
 
+<!-- ═══════════ Navigation ═══════════ -->
 <nav class="nav">
   <div class="nav-inner">
     <a href="../" class="home">Княжа доба</a>
@@ -38,194 +153,114 @@
   </div>
 </nav>
 
+<!-- ═══════════ Hero ═══════════ -->
 <div class="hero">
   <h1>🪵 Лазер по дереву</h1>
-  <p>Лазерне гравіювання та різання на березовій фанері — брелоки, підвіски, закладки,<br>костери та ялинкові прикраси за мотивами мистецтва Київської Русі X–XIII століть</p>
+  <p>Лазерне гравіювання та різання на березовій фанері<br>
+  <span style="color:var(--accent-gold);">За мотивами мистецтва Київської Русі X–XI століть</span></p>
 </div>
 
-<div class="section" id="products">
-  <!-- ── Rule block ── -->
-  <div class="rule-block">
-    <h3>📐 ACCURACY — блок точності (додавати до кожного промта)</h3>
-    <pre>Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.</pre>
+<!-- ═══════════ Products ═══════════ -->
+<div class="section">
+  <p class="intro">
+    Вироби з березової фанери — від брелоків з автентичними князівськими знаками
+    до ажурних ялинкових прикрас. Кожен дизайн базується на
+    <strong>верифікованих музейних референсах</strong>: колти Метрополітен,
+    плінфа з тризубом НМІУ, Остромирове Євангеліє, мозаїки Софії Київської.
+  </p>
 
-    <h3 style="margin-top:14px;">📸 STYLE — стильовий блок</h3>
-    <pre>professional product photography, soft studio lighting, neutral
-light-gray background, shallow depth of field, photorealistic, high detail,
-no text overlays, no watermarks, museum gift shop aesthetic.</pre>
-
-    <p style="margin-top:12px; color:var(--text-muted); font-size:11px;">
-      ⚠️ Для флет-лей: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;">flat lay product photography, top-down view, linen fabric background, natural window light, photorealistic.</code>
-    </p>
+  <div id="product-grid" class="product-grid">
+    <!-- Rendered by JavaScript -->
   </div>
-
-  <!-- ── Product grid rendered by JS ── -->
-  <h2 class="section-title" style="margin-top:20px;">Вироби</h2>
-  <div class="grid" id="productGrid"></div>
 </div>
 
+<!-- ═══════════ Footer ═══════════ -->
 <footer class="footer">
-  Джерела: Wikipedia (укр./eng.), НМІУ, Енциклопедія історії України, Metropolitan Museum, Wikimedia Commons<br>
-  Генерація зображень: Gemini (Nano Banana) · Точні легенди — у векторі дизайнером<br>
-  <a href="https://github.com/cropsp/koraklenu">GitHub</a>
+  Джерела: НМІУ (old.nmiu.org), Metropolitan Museum of Art (metmuseum.org, public domain), Wikimedia Commons<br>
+  Остромирове Євангеліє (1056–1057), Софія Київська (мозаїки XI ст.)<br>
+  Генерація зображень: Gemini (Nano Banana) · <a href="https://github.com/cropsp/koraklenu">GitHub</a>
 </footer>
 
+<!-- ═══════════ JavaScript ═══════════ -->
 <script>
-/* ═══════════════════════════════════════════
-   Wood Laser — продуктова вітрина
-   ═══════════════════════════════════════════ */
-
 const products = [
   {
-    id: "A2",
-    name: "Брелоки «Знаки князів» (серія)",
-    desc: "Набір із трьох дерев'яних брелоків — наскрізні силуети автентичних княжих знаків X–XI ст.",
+    id: 'A2',
+    name: 'Брелоки «Знаки князів»',
     refs: [
-      { src: "https://old.nmiu.org/images/content/exponat_week/plinfa.jpg", alt: "Плінфа з тризубом Володимира" },
-      { src: "https://old.nmiu.org/images/content/exponat_week/pidviska_tryzub.jpg", alt: "Підвіска з Циблів — тризуб + рослинний орнамент" }
+      { url: 'https://old.nmiu.org/images/content/exponat_week/plinfa.jpg', label: 'Плінфа з тризубом · НМІУ' },
+      { url: 'https://old.nmiu.org/images/content/exponat_week/pidviska_tryzub.jpg', label: 'Підвіска з Циблів · НМІУ' }
     ],
-    prompt: `Using the uploaded reference images of authentic 10th–11th century princely trident symbols (from a brick stamp and a coin), create a set of three wooden keychains laser-cut from birch plywood, displayed on dark slate. Each keychain is a cut-through silhouette of one authentic symbol variant from the references. Clean charred edges, small leather cords.
-
-ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
-
-STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+    desc: 'Набір із трьох дерев\'яних брелоків, лазерне різання на березовій фанері. Кожен — силует автентичного князівського знаку X–XI ст. Чисті обвуглені краї, шкіряні шнурки.'
   },
   {
-    id: "A3",
-    name: "Закладка з плетінкою та буквицею",
-    desc: "Тонка дерев'яна закладка з ажурною плетінкою вздовж краю та гравійованою буквицею з Остромирового Євангелія.",
+    id: 'A3',
+    name: 'Закладка з плетінкою та буквицею',
     refs: [
-      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Сторінка Остромирового Євангелія із заставкою" }
+      { url: 'https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg', label: 'Остромирове Євангеліє · Wikimedia' }
     ],
-    prompt: `Using the uploaded manuscript page as reference for the ornament style, create a slim wooden bookmark, laser-cut from thin plywood, with an openwork interlace pattern along one edge copied from the manuscript headpiece, and one large engraved initial letter reproduced from the reference. The bookmark sticks out of an open old book, warm library light.
-
-ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
-
-STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+    desc: 'Тонка дерев\'яна закладка з ажурним плетеним орнаментом по краю — за мотивами заставок Остромирового Євангелія (1056–1057). Вигравіювана буквиця з рукопису.'
   },
   {
-    id: "A4",
-    name: "Підвіска-«колт» (серія з 4 варіантів)",
-    desc: "Лазерна дерев'яна підвіска-намисто, що відтворює форму та гравійований дизайн середньовічного золотого колта. Серія з 4 різних варіантів (по одному референсу на генерацію).",
+    id: 'A4',
+    name: 'Підвіска-«колт»',
     refs: [
-      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg", alt: "Колт: два сирини + дерево життя" },
-      { src: "https://images.metmuseum.org/CRDImages/md/original/17.190.679.jpg", alt: "Колт: два птахи + дерево життя" },
-      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg", alt: "Колт: птахи + перли по краю" },
-      { src: "https://images.metmuseum.org/CRDImages/md/original/DT12038.jpg", alt: "Колт: святі з мученицьким хрестом" }
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11967.jpg', label: 'Колт: сирини + дерево · Met' },
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/17.190.679.jpg', label: 'Колт: птахи + дерево · Met' },
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg', label: 'Колт: птахи з перлами · Met' },
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT12038.jpg', label: 'Колт: святі з хрестом · Met' }
     ],
-    prompt: `Using the uploaded photo of a medieval gold kolt pendant as reference, create a laser-cut wooden pendant necklace that reproduces its exact shape and engraved design. Light wood, dark engraved lines, thin leather cord. Product photo on a ceramic dish with dried flowers.
-
-ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
-
-STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+    desc: 'Серія з 4 варіантів. Дерев\'яна підвіска-репліка золотого колта — форма та гравійований дизайн точно відтворюють оригінали з колекції Metropolitan Museum (public domain). Світле дерево, шкіряний шнур.'
   },
   {
-    id: "A5",
-    name: "Костери зі сланцю",
-    desc: "Набір із чотирьох круглих сланцевих костерів з лазерним гравіюванням: Оранта та три варіанти плетінки з Остромирового Євангелія.",
+    id: 'A5',
+    name: 'Костери зі сланцю',
     refs: [
-      { src: "https://commons.wikimedia.org/wiki/File:Oranta-Kyiv.jpg", alt: "Оранта, Софія Київська" },
-      { src: "https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg", alt: "Остромирове Євангеліє — заставка з плетінкою" }
+      { url: 'https://commons.wikimedia.org/wiki/File:Oranta-Kyiv.jpg', label: 'Оранта · Софія Київська' },
+      { url: 'https://commons.wikimedia.org/wiki/File:Ostromir_Gospel_1.jpg', label: 'Остромирове Євангеліє · Wikimedia' }
     ],
-    prompt: `Using the uploaded mosaic and manuscript references, create a set of four round slate coasters with laser-engraved line-art designs: one reproduces the standing figure with raised hands from the mosaic reference as fine line art, the others use the interlace patterns from the manuscript reference. Silver-gray engraving on black slate, stacked and fanned on a wooden table.
-
-ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
-
-STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+    desc: 'Набір із 4 круглих сланцевих костерів. Лазерне гравіювання: Оранта з Софії Київської — лінійна графіка; плетені орнаменти з Остромирового Євангелія. Сріблясто-сіре гравіювання на чорному сланці.'
   },
   {
-    id: "A6",
-    name: "Ялинкова прикраса «Колт»",
-    desc: "Делікатна ажурна дерев'яна ялинкова прикраса у формі колта з перловим краєм, на червоній стрічці.",
+    id: 'A6',
+    name: 'Ялинкова прикраса «Колт»',
     refs: [
-      { src: "https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg", alt: "Колт з перлами по краю" }
+      { url: 'https://images.metmuseum.org/CRDImages/md/original/DT11965.jpg', label: 'Колт з перлами · Met' }
     ],
-    prompt: `Using the uploaded kolt pendant photo as reference, create a delicate laser-cut wooden Christmas ornament reproducing its shape with an openwork beaded border, hanging on a red ribbon against a blurred Christmas tree.
-
-ACCURACY: Faithfully reproduce the design, composition and figures from the uploaded reference image. Do not invent any inscriptions, dates, names or symbols. If the reference has lettering, copy its letterforms as decorative shapes exactly as they appear, or render them as worn, barely legible strokes. Do not add the modern Ukrainian state emblem.
-
-STYLE: professional product photography, soft studio lighting, neutral light-gray background, shallow depth of field, photorealistic, high detail, no text overlays, no watermarks, museum gift shop aesthetic.`
+    desc: 'Ажурна дерев\'яна ялинкова прикраса у формі колта з перлинним краєм. Лазерне різання, червона стрічка. За мотивами золотого колта XI–XII ст. (Metropolitan Museum).'
   }
 ];
 
-/* ── Render ── */
-const grid = document.getElementById('productGrid');
+function renderProducts() {
+  const grid = document.getElementById('product-grid');
+  if (!grid) return;
 
-products.forEach(p => {
-  const card = document.createElement('div');
-  card.className = 'card';
+  grid.innerHTML = products.map(p => `
+    <div class="product-card">
+      <div class="product-card-top">
+        <div class="card-refs">
+          <span class="ref-label">Референс${p.refs.length > 1 ? 'и' : ''}</span>
+          ${p.refs.map(r => `
+            <a href="${r.url}" target="_blank" rel="noopener" title="${r.label}">
+              <img src="${r.url}" alt="${r.label}" loading="lazy" onerror="this.parentElement.style.display='none'">
+            </a>
+          `).join('')}
+        </div>
+        <div class="card-placeholder">
+          <div class="ph-icon">🖼️</div>
+          <span>Зображення з'явиться<br>після генерації</span>
+        </div>
+      </div>
+      <div class="product-card-bottom">
+        <div class="product-name">${p.name}</div>
+        <div class="product-desc">${p.desc}</div>
+        <span class="product-badge">Фанера · лазер</span>
+      </div>
+    </div>
+  `).join('');
+}
 
-  /* Header */
-  const header = document.createElement('div');
-  header.className = 'card-header';
-  header.innerHTML = `<span class="name">${p.id}. ${p.name}</span><span class="badge">Лазер · фанера</span>`;
-  card.appendChild(header);
-
-  /* Body */
-  const body = document.createElement('div');
-  body.className = 'card-body';
-
-  /* Description */
-  const desc = document.createElement('p');
-  desc.style.cssText = 'font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;';
-  desc.textContent = p.desc;
-  body.appendChild(desc);
-
-  /* Reference images */
-  if (p.refs && p.refs.length) {
-    const refsDiv = document.createElement('div');
-    refsDiv.className = 'refs';
-    p.refs.forEach(r => {
-      const img = document.createElement('img');
-      img.src = r.src;
-      img.alt = r.alt;
-      img.title = r.alt;
-      img.loading = 'lazy';
-      /* Commons page URLs → swap to raw when possible; fallback to original */
-      img.onerror = function() {
-        /* If a wiki page URL fails as img src, hide it gracefully */
-        this.style.display = 'none';
-      };
-      refsDiv.appendChild(img);
-    });
-    body.appendChild(refsDiv);
-  }
-
-  /* Prompt */
-  const promptDiv = document.createElement('div');
-  promptDiv.className = 'prompt';
-  promptDiv.textContent = p.prompt;
-
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.textContent = '📋 Копіювати';
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(p.prompt).then(() => {
-      copyBtn.textContent = '✅ Скопійовано';
-      copyBtn.classList.add('copied');
-      setTimeout(() => {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    }).catch(() => {
-      copyBtn.textContent = '❌ Помилка';
-      copyBtn.classList.add('failed');
-      setTimeout(() => {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('failed');
-      }, 2000);
-    });
-  });
-  promptDiv.appendChild(copyBtn);
-
-  body.appendChild(promptDiv);
-  card.appendChild(body);
-  grid.appendChild(card);
-});
+document.addEventListener('DOMContentLoaded', renderProducts);
 </script>
 
 </body>

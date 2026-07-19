@@ -6,10 +6,133 @@
 <title>Інші техніки — Княжа доба</title>
 <link rel="stylesheet" href="../css/style.css">
 <style>
-  .hero.hero-other {
+  /* ── Page-specific overrides ── */
+
+  .hero-other {
     background: linear-gradient(135deg, #1a1a2e 0%, #1a2e1f 50%, #0f3a28 100%);
   }
-  .hero.hero-other h1 { color: var(--accent-green); }
+  .hero-other h1 { color: var(--accent-green); }
+
+  /* Card accent per product */
+  .card.other-card { border-left: 3px solid transparent; }
+  .card.other-card:hover { border-left-color: var(--accent-green); }
+
+  /* Media side-by-side: ref left, placeholder right */
+  .media {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .media-col {
+    flex: 1;
+    min-width: 0;
+  }
+  .media-col .label {
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .media-col img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Placeholder block when no mockup image exists */
+  .placeholder {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    border: 2px dashed var(--border);
+    background: rgba(72,187,120,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    gap: 8px;
+  }
+  .placeholder .ph-icon {
+    font-size: 36px;
+    opacity: 0.6;
+  }
+  .placeholder .ph-text {
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.4;
+    padding: 0 8px;
+    color: var(--text-muted);
+  }
+
+  /* No-reference note */
+  .no-ref {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: rgba(255,255,255,0.02);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    gap: 6px;
+    font-size: 11px;
+    text-align: center;
+    padding: 12px;
+    line-height: 1.5;
+  }
+  .no-ref .nr-icon {
+    font-size: 28px;
+    opacity: 0.5;
+  }
+
+  /* Fact block — historical context */
+  .fact {
+    background: rgba(255,255,255,0.04);
+    border-left: 3px solid var(--accent-green);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #bbc;
+  }
+  .fact .src {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  /* Ref image hover zoom */
+  .media-col img.ref-img {
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .media-col img.ref-img:hover {
+    transform: scale(2.5);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  /* Description line */
+  .desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 500px) {
+    .media { flex-direction: column; }
+    .media-col img:hover { transform: scale(1.4); }
+    .placeholder, .no-ref { aspect-ratio: auto; min-height: 140px; }
+  }
 </style>
 </head>
 <body>
@@ -33,102 +156,70 @@
 
 <div class="section">
 
-  <h2 class="section-title accent-green">Промти для генерації</h2>
-
-  <div class="rule-block">
-    <strong>📋 Блоки, що додаються до кожного промта:</strong>
-    <pre>ACCURACY: Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.</pre>
-    <pre>STYLE: professional product photography, soft studio lighting, neutral
-light-gray background, shallow depth of field, photorealistic, high detail,
-no text overlays, no watermarks, museum gift shop aesthetic.</pre>
-  </div>
+  <h2 class="section-title accent-green">Вироби</h2>
 
   <div class="grid" id="products"></div>
 
 </div>
 
 <footer class="footer">
-  Джерела: Metropolitan Museum (public domain), Wikimedia Commons · Генерація зображень: Gemini (Nano Banana)<br>
-  Точні легенди та написи — у векторі дизайнером, генерації для концептів і презентацій<br>
+  Джерела: Metropolitan Museum of Art (public domain), Wikimedia Commons, археологічні публікації<br>
+  Мокапи — в процесі створення; сторінка демонструє концепти та історичний контекст<br>
   <a href="https://github.com/cropsp/koraklenu">GitHub</a>
 </footer>
 
 <script>
-const ACC = [
-  "ACCURACY: Faithfully reproduce the design, composition and figures from the",
-  "uploaded reference image. Do not invent any inscriptions, dates, names or",
-  "symbols. If the reference has lettering, copy its letterforms as decorative",
-  "shapes exactly as they appear, or render them as worn, barely legible strokes.",
-  "Do not add the modern Ukrainian state emblem."
-].join("\n");
-
-const STL = [
-  "STYLE: professional product photography, soft studio lighting, neutral",
-  "light-gray background, shallow depth of field, photorealistic, high detail,",
-  "no text overlays, no watermarks, museum gift shop aesthetic."
-].join("\n");
-
-const products = [
+var products = [
   {
-    id: "Д1",
-    name: "Значок із м'якою емаллю «Колт»",
-    refs: ["kolt_siryns.jpg"],
-    refPath: "../references/",
-    prompt: [
-      "Using the uploaded cloisonné kolt photo as reference, create a small enamel",
-      "pin reproducing its exact shape and design: two sirins flanking a tree of",
-      "life in enamel cells of deep blue, red and white with gold metal outlines —",
-      "the modern soft-enamel technique deliberately echoing the original medieval",
-      "cloisonné. Macro shot on a linen jacket lapel.",
-      ACC,
-      STL
-    ].join("\n")
+    id: 'Д1',
+    name: 'Значок із м\'якою емаллю «Колт»',
+    badge: 'Емаль',
+    ref: '../references/kolt_siryns.jpg',
+    refAlt: 'Золотий колт із сиринами, перегородчаста емаль, XI–XII ст.',
+    refHas: true,
+    placeholderIcon: '📌',
+    placeholderText: 'Мокап значка<br>з м\'якою емаллю',
+    desc: 'Невеликий значок з м\'якою емаллю, що точно відтворює форму й дизайн золотого колта: два сирини обабіч дерева життя в емалевих комірках темно-синього, червоного та білого кольорів із золотими металевими контурами. Сучасна техніка soft enamel свідомо наслідує середньовічну перегородчасту емаль.',
+    fact: 'Колти — парні жіночі прикраси скронь, поширені на Русі в XI–XIII ст. Виготовлялися з золота та срібла в техніці перегородчастої емалі. Сирини — міфологічні райські птахи з головою діви, запозичені з візантійської традиції. Найбагатші колти походять зі скарбів Києва, Чернігова, Рязані.',
+    src: 'Metropolitan Museum of Art (public domain); Рыбаков Б.А. «Ремесло Древней Руси», 1948'
   },
   {
-    id: "Д2",
-    name: "Керамічне горня",
-    refs: [],
-    refPath: "../references/",
-    prompt: [
-      "A handmade ceramic mug in warm cream glaze with a band of simple medieval",
-      "Slavic pottery ornament around the middle: parallel wavy and straight",
-      "incised lines, exactly like on 10th–13th century Kyivan Rus pots. A small",
-      "potter's wheel mark stamped on the bottom, shown beside. Rustic kitchen,",
-      "morning light.",
-      "ACCURACY: no invented symbols or text.",
-      STL
-    ].join("\n")
+    id: 'Д2',
+    name: 'Керамічне горня',
+    badge: 'Кераміка',
+    ref: null,
+    refHas: false,
+    placeholderIcon: '🏺',
+    placeholderText: 'Мокап горняти<br>ручної роботи',
+    desc: 'Керамічне горня ручної роботи, тепла кремова глазур, пояс простого слов\'янського орнаменту X–XIII ст.: паралельні хвилясті та прямі врізні лінії. Штамп гончарного кола на денці.',
+    fact: 'Гончарство — одне з найдавніших ремесел Русі. Кераміка X–XIII ст. виготовлялася на ручному гончарному колі, часто прикрашалася врізним хвилястим або лінійним орнаментом. Посуд обпалювали в горнах при температурі 800–950 °C. Типові форми: горщики, глеки, миски, корчаги. Орнамент мав не лише декоративне, а й оберегове значення.',
+    src: 'Археологія Української РСР, т. 3; Монгайт А.Л. «Древняя Русь», 1973'
   },
   {
-    id: "Д3",
-    name: "Блокнот «Ізборник»",
-    refs: ["izbornik.jpg"],
-    refPath: "../references/",
-    prompt: [
-      "Using the uploaded manuscript page as reference, create a hardcover notebook",
-      "whose cover reproduces the ornate rectangular headpiece frame from the",
-      "reference — old-Byzantine floral ornament with peacocks — with gold accents",
-      "on deep teal, plus a leather spine. On a desk with a fountain pen.",
-      ACC,
-      STL
-    ].join("\n")
+    id: 'Д3',
+    name: 'Блокнот «Ізборник»',
+    badge: 'Папір · шкіра',
+    ref: '../references/izbornik.jpg',
+    refAlt: 'Ізборник Святослава 1073 року — заставка з павичами',
+    refHas: true,
+    placeholderIcon: '📓',
+    placeholderText: 'Мокап блокнота<br>з твердою обкладинкою',
+    desc: 'Блокнот із твердою обкладинкою, що відтворює орнаментальну прямокутну заставку з Ізборника Святослава 1073 року — рослинний візантійський орнамент із павичами, золоті акценти на насиченому синьо-зеленому, шкіряний корінець.',
+    fact: 'Ізборник Святослава 1073 року — одна з найдавніших рукописних книг Київської Русі, переписана з болгарського оригіналу X ст. для князя Святослава Ярославича. Містить статті богословського, філософського та природничого змісту. Оздоблений заставками, ініціалами та мініатюрами у візантійському стилі — рослинний орнамент, павичі, геометричні мотиви.',
+    src: 'Wikimedia Commons; Ізборник Святослава 1073 р. (факсимільне видання, 1983)'
   },
   {
-    id: "Д4",
-    name: "Сургучна печатка «Молівдовул»",
-    refs: ["sribnyk_yaroslav.jpg"],
-    refPath: "../references_coins_split/",
-    prompt: [
-      "Using the uploaded coin photo as style reference, create a brass wax seal",
-      "stamp carved with the Saint George bust design from the reference, shown",
-      "next to red wax impressions on kraft envelopes. Byzantine seal aesthetic.",
-      ACC,
-      STL
-    ].join("\n")
+    id: 'Д4',
+    name: 'Сургучна печатка «Молівдовул»',
+    badge: 'Латунь · сургуч',
+    ref: '../references_coins_split/sribnyk_yaroslav.jpg',
+    refAlt: 'Срібник Ярослава Мудрого — святий Георгій',
+    refHas: true,
+    placeholderIcon: '🔱',
+    placeholderText: 'Мокап штампа<br>та сургучевої печатки',
+    desc: 'Латунний штамп для сургучної печатки з різьбленим зображенням святого Георгія — за срібником Ярослава Мудрого (XI ст.). У комплекті з червоним сургучем. Візантійська естетика молівдовулів.',
+    fact: 'Молівдовули (свинцеві печатки) — важливе джерело з історії Русі. Ними скріплювали князівські грамоти й договори. На печатках зображували святих покровителів власників. Святий Георгій — небесний патрон Ярослава Мудрого (хрещене ім\'я — Георгій). Сургучні печатки з\'явилися пізніше, у XVI ст., але естетика залишилася тією самою.',
+    src: 'Янин В.Л. «Актовые печати Древней Руси X–XV вв.», 1970; Wikipedia: Срібник Ярослава'
   }
 ];
 
@@ -136,71 +227,57 @@ function escapeHtml(s) {
   return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-function copyToClipboard(text, btn) {
-  function done(ok) {
-    if (ok) {
-      btn.textContent = '\u2713 Скопійовано!';
-      btn.className = 'copy-btn copied';
-      setTimeout(function(){ btn.textContent = 'Копіювати'; btn.className = 'copy-btn'; }, 2000);
-    } else {
-      btn.textContent = 'Помилка';
-      btn.className = 'copy-btn failed';
-      setTimeout(function(){ btn.textContent = 'Копіювати'; btn.className = 'copy-btn'; }, 2000);
-    }
-  }
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function(){ done(true); }).catch(function(){
-      fallbackCopy(text, done);
-    });
-  } else {
-    fallbackCopy(text, done);
-  }
-}
-
-function fallbackCopy(text, done) {
-  var ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try {
-    done(document.execCommand('copy'));
-  } catch(e) {
-    done(false);
-  }
-  document.body.removeChild(ta);
-}
-
 function render() {
   var container = document.getElementById('products');
+  var html = '';
 
   products.forEach(function(p) {
-    var card = document.createElement('div');
-    card.className = 'card';
+    // Left column: reference image or no-ref note
+    var leftCol;
+    if (p.refHas) {
+      leftCol =
+        '<div class="media-col">' +
+        '<div class="label">Референс</div>' +
+        '<img class="ref-img" src="' + escapeHtml(p.ref) + '" alt="' + escapeHtml(p.refAlt) + '" title="' + escapeHtml(p.refAlt) + '" loading="lazy" onerror="this.parentElement.innerHTML=\'<div class=\\\'label\\\'>Референс</div><div class=\\\'no-ref\\\'><div class=\\\'nr-icon\\\'>🖼️</div>Зображення<br>недоступне</div>\'">' +
+        '</div>';
+    } else {
+      leftCol =
+        '<div class="media-col">' +
+        '<div class="label">Референс</div>' +
+        '<div class="no-ref">' +
+        '<div class="nr-icon">🏺</div>' +
+        'Орнамент простий<br>і типовий —<br>гончарна кераміка<br>X–XIII ст.' +
+        '</div>' +
+        '</div>';
+    }
 
-    var refHtml = p.refs.length === 0
-      ? '<span style="color:var(--text-dim);font-size:12px;font-style:italic">Без референса — орнамент простий і типовий</span>'
-      : p.refs.map(function(r){
-          return '<img src="' + p.refPath + r + '" alt="' + r + '" title="' + r + '" loading="lazy" onerror="this.style.display=\'none\'">';
-        }).join('');
-
-    var promptText = p.prompt;
-
-    card.innerHTML =
-      '<div class="card-header"><span class="name">' + escapeHtml(p.name) + '</span><span class="badge badge-green">' + p.id + '</span></div>' +
-      '<div class="card-body">' +
-      '<div class="refs">' + refHtml + '</div>' +
-      '<div class="prompt">' + escapeHtml(promptText) +
-      '<button class="copy-btn">Копіювати</button></div>' +
+    // Right column: placeholder (no generated mockups yet)
+    var rightCol =
+      '<div class="media-col">' +
+      '<div class="label">Мокап</div>' +
+      '<div class="placeholder">' +
+      '<div class="ph-icon">' + escapeHtml(p.placeholderIcon) + '</div>' +
+      '<div class="ph-text">' + p.placeholderText + '</div>' +
+      '</div>' +
       '</div>';
 
-    card.querySelector('.copy-btn').onclick = function() {
-      copyToClipboard(promptText, this);
-    };
-
-    container.appendChild(card);
+    html +=
+      '<div class="card other-card">' +
+      '<div class="card-header">' +
+      '<span class="name">' + escapeHtml(p.name) + '</span>' +
+      '<span class="badge badge-green">' + escapeHtml(p.badge) + '</span>' +
+      '</div>' +
+      '<div class="card-body">' +
+      '<p class="desc">' + escapeHtml(p.desc) + '</p>' +
+      '<div class="media">' + leftCol + rightCol + '</div>' +
+      '<div class="fact">' + escapeHtml(p.fact) +
+      '<div class="src">📚 ' + escapeHtml(p.src) + '</div>' +
+      '</div>' +
+      '</div>' +
+      '</div>';
   });
+
+  container.innerHTML = html;
 }
 
 render();

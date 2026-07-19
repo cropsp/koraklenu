@@ -9,19 +9,116 @@
   /* ── Leather category overrides ── */
   :root {
     --cat-accent: var(--accent-gold);
-    --cat-accent-dim: rgba(212,168,67,0.3);
+    --cat-accent-dim: rgba(212,168,67,0.25);
   }
-  .hero { background: linear-gradient(135deg, #1a1a2e 0%, #1e1810 50%, #2a2014 100%); }
+  .hero {
+    background: linear-gradient(135deg, #1a1a2e 0%, #1e1810 45%, #2a2014 100%);
+  }
   .hero h1 { color: var(--accent-gold); }
-  .rule-block { border-color: var(--cat-accent-dim); }
-  .rule-block h3 { color: var(--accent-gold); font-size: 13px; margin-bottom: 6px; }
 
   .section-title { color: var(--accent-gold); border-bottom-color: var(--accent-gold); }
 
   .card .badge { background: var(--accent-gold); color: #1a1a2e; }
   .card .name { color: var(--accent-gold); }
 
-  .empty-state { text-align: center; color: var(--text-dim); padding: 40px; font-size: 14px; }
+  /* ── Two-column product layout ── */
+  .product-cols {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .product-cols .col-ref {
+    flex: 0 0 48%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .product-cols .col-gen {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+  }
+  .col-ref img {
+    width: 100%;
+    height: auto;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .col-ref img:hover {
+    transform: scale(2.2);
+    z-index: 10;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  /* ── Placeholder ── */
+  .placeholder {
+    flex: 1;
+    min-height: 200px;
+    background: var(--bg-surface);
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 13px;
+    gap: 8px;
+    text-align: center;
+    padding: 16px;
+  }
+  .placeholder .icon {
+    font-size: 40px;
+    opacity: 0.5;
+  }
+  .placeholder .label {
+    font-size: 11px;
+    color: var(--text-dim);
+  }
+
+  /* ── Description ── */
+  .product-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+
+  /* ── Source link ── */
+  .source-link {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+  .source-link a {
+    color: var(--accent-gold);
+    text-decoration: none;
+  }
+  .source-link a:hover { text-decoration: underline; }
+
+  /* ── Responsive ── */
+  @media (max-width: 600px) {
+    .product-cols {
+      flex-direction: column;
+    }
+    .product-cols .col-ref {
+      flex: unset;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .col-ref img {
+      max-height: 100px;
+      max-width: 48%;
+    }
+    .placeholder {
+      min-height: 140px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -43,169 +140,99 @@
   <p>Лазерне гравіювання на рослинно-дубленій шкірі (veg‑tan leather) —<br>браслети, картхолдери, патчі за мотивами мистецтва Київської Русі X–XIII століть</p>
 </div>
 
-<div class="section" id="products">
-  <!-- ── Rule block ── -->
-  <div class="rule-block">
-    <h3>📐 ACCURACY — блок точності (додавати до кожного промта)</h3>
-    <pre>Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.</pre>
+<div class="section">
+  <h2 class="section-title">Вироби</h2>
 
-    <h3 style="margin-top:14px;">📸 STYLE — стильовий блок</h3>
-    <pre>professional product photography, soft studio lighting, neutral
-light-gray background, shallow depth of field, photorealistic, high detail,
-no text overlays, no watermarks, museum gift shop aesthetic.</pre>
+  <div class="grid">
 
-    <p style="margin-top:12px; color:var(--text-muted); font-size:11px;">
-      ⚠️ Для флет-лей: <code style="background:rgba(0,0,0,0.3);padding:2px 6px;border-radius:3px;">flat lay product photography, top-down view, linen fabric background, natural window light, photorealistic.</code>
-    </p>
-  </div>
+    <!-- ─── Б1 — Шкіряний браслет «Русалії» ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="name">Б1. Шкіряний браслет «Русалії»</span>
+        <span class="badge">Шкіра · лазер</span>
+      </div>
+      <div class="card-body">
+        <p class="product-desc">Широкий браслет-каф із вег-тан шкіри з лазерним гравіюванням сцен за мотивами давньоруських срібних браслетів-наручів XII–XIII ст. Грифони з повернутими головами, фантастичні звірі в арочних рамках. Темне гравіювання на коньячній шкірі, латунні кнопки.</p>
+        <div class="product-cols">
+          <div class="col-ref">
+            <img src="https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg" alt="Браслет-наруч 1893 — грифони, чернь" loading="lazy" onerror="this.style.display='none'">
+            <img src="https://spadok.org.ua/images/braslety-naruchni/braslet-naruch-kudryavskyi-skarb.jpg" alt="Браслет-наруч, Кудрявський скарб" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="col-gen">
+            <div class="placeholder">
+              <span class="icon">🐄</span>
+              <span>Генероване зображення</span>
+              <span class="label">буде додано після генерації</span>
+            </div>
+          </div>
+        </div>
+        <div class="source-link">
+          Джерело: <a href="https://spadok.org.ua/yuvelirne-mystetstvo/braslety-naruchni" target="_blank" rel="noopener">Spadok.org.ua — Браслети-наручі</a>
+        </div>
+      </div>
+    </div>
 
-  <!-- ── Product grid rendered by JS ── -->
-  <h2 class="section-title" style="margin-top:20px;">Вироби</h2>
-  <div class="grid" id="productGrid"></div>
+    <!-- ─── Б2 — Картхолдер із тризубом ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="name">Б2. Картхолдер із тризубом</span>
+        <span class="badge">Шкіра · лазер</span>
+      </div>
+      <div class="card-body">
+        <p class="product-desc">Тонкий картхолдер з коньячної шкіри з тризубом Володимира Великого — точне лазерне гравіювання за вірчою підвіскою з Циблів (X–XI ст., НМІУ). Компактний, на 4–6 карток.</p>
+        <div class="product-cols">
+          <div class="col-ref">
+            <img src="https://old.nmiu.org/images/content/exponat_week/pidviska_tryzub.jpg" alt="Вірча підвіска з Циблів — тризуб" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="col-gen">
+            <div class="placeholder">
+              <span class="icon">🐄</span>
+              <span>Генероване зображення</span>
+              <span class="label">буде додано після генерації</span>
+            </div>
+          </div>
+        </div>
+        <div class="source-link">
+          Джерело: <a href="https://old.nmiu.org/" target="_blank" rel="noopener">НМІУ — Вірча підвіска з Циблів</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Б3 — Шкіряний патч із грифоном ─── -->
+    <div class="card">
+      <div class="card-header">
+        <span class="name">Б3. Шкіряний патч із грифоном</span>
+        <span class="badge">Шкіра · лазер</span>
+      </div>
+      <div class="card-body">
+        <p class="product-desc">Круглий шкіряний патч, 60 мм, з лазерним гравіюванням грифона — крила підняті, голова повернута назад — в обрамленні плетеного бордюру. За мотивами Сахнівської діадеми (XII ст.). Темний випал на натуральній шкірі.</p>
+        <div class="product-cols">
+          <div class="col-ref">
+            <img src="https://spadok.org.ua/images/bolokhiv/2456.jpg" alt="Сахнівська діадема — грифони" loading="lazy" onerror="this.style.display='none'">
+            <img src="https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg" alt="Браслет-наруч 1893 — грифони" loading="lazy" onerror="this.style.display='none'">
+          </div>
+          <div class="col-gen">
+            <div class="placeholder">
+              <span class="icon">🐄</span>
+              <span>Генероване зображення</span>
+              <span class="label">буде додано після генерації</span>
+            </div>
+          </div>
+        </div>
+        <div class="source-link">
+          Джерело: <a href="https://spadok.org.ua/yuvelirne-mystetstvo/diademy" target="_blank" rel="noopener">Spadok.org.ua — Сахнівська діадема</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.grid -->
 </div>
 
 <footer class="footer">
-  Джерела: Wikipedia (укр./eng.), НМІУ, Енциклопедія історії України, Metropolitan Museum, Wikimedia Commons<br>
+  Джерела: Spadok.org.ua, НМІУ (Національний музей історії України), Енциклопедія історії України, Wikimedia Commons<br>
   Генерація зображень: Gemini (Nano Banana) · Точні легенди — у векторі дизайнером<br>
   <a href="https://github.com/cropsp/koraklenu">GitHub</a>
 </footer>
-
-<script>
-/* ═══════════════════════════════════════════
-   Leather Laser — продуктова вітрина
-   ═══════════════════════════════════════════ */
-
-const accuracyBlock = `Faithfully reproduce the design, composition and figures from the
-uploaded reference image. Do not invent any inscriptions, dates, names or
-symbols. If the reference has lettering, copy its letterforms as decorative
-shapes exactly as they appear, or render them as worn, barely legible strokes.
-Do not add the modern Ukrainian state emblem.`;
-
-const styleBlock = `professional product photography, soft studio lighting, neutral
-light-gray background, shallow depth of field, photorealistic, high detail,
-no text overlays, no watermarks, museum gift shop aesthetic.`;
-
-const products = [
-  {
-    id: "Б1",
-    name: "Шкіряний браслет «Русалії»",
-    desc: "Широкий браслет-каф із рослинно-дубленої шкіри з лазерним гравіюванням сцен із середньовічних срібних браслетів: грифони з повернутими головами та фантастичні звірі в арочних рамках. Темне гравіювання на коньячній шкірі, латунні кнопки.",
-    refs: [
-      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — грифони, чернь" },
-      { src: "https://spadok.org.ua/images/braslety-naruchni/braslet-naruch-kudryavskyi-skarb.jpg", alt: "Браслет-наруч, Кудрявський скарб — воїн і хижак" }
-    ],
-    prompt: `Using the uploaded photos of medieval silver bracelets with engraved arched panels as reference, create a wide veg-tan leather cuff bracelet with the same scenes laser-engraved along its length, reproducing the figures from the references: griffins with turned-back heads and the fantastic beasts in arched frames. Dark engraving on cognac leather, brass snap closures.
-
-ACCURACY: ${accuracyBlock}
-
-STYLE: ${styleBlock}`
-  },
-  {
-    id: "Б2",
-    name: "Картхолдер із тризубом",
-    desc: "Тонкий картхолдер із коньячної шкіри з лазерним гравіюванням автентичного тризуба з підвіски з Циблів — маленький і по центру. Поруч брелок у тому ж стилі.",
-    refs: [
-      { src: "https://old.nmiu.org/images/content/exponat_week/pidviska_tryzub.jpg", alt: "Вірча підвіска з Циблів — тризуб + рослинний орнамент" }
-    ],
-    prompt: `Using the uploaded photo of the ancient trident pendant as reference, create a slim cognac leather cardholder with that exact trident symbol laser-engraved small and centered. A matching keychain beside it, craft workshop table, warm light.
-
-ACCURACY: ${accuracyBlock}
-
-STYLE: ${styleBlock}`
-  },
-  {
-    id: "Б3",
-    name: "Шкіряний патч із грифоном",
-    desc: "Круглий лазерний патч 60 мм із натуральної шкіри — один грифон із піднятими крилами та повернутою головою, в обрамленні тонкої плетінки. Темний пропал на світлій шкірі, каталоговий стиль.",
-    refs: [
-      { src: "https://spadok.org.ua/images/bolokhiv/2456.jpg", alt: "Сахнівська діадема — грифони + Александр" },
-      { src: "https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg", alt: "Браслет-наруч 1893 — грифони, чернь" }
-    ],
-    prompt: `Using the uploaded references, create a round laser-engraved leather patch, 60 mm, reproducing one griffin from the reference — wings raised, head turned back — framed by a thin interlace border. Dark burn on natural tan leather, flat on white background, product catalog style.
-
-ACCURACY: ${accuracyBlock}
-
-STYLE: ${styleBlock}`
-  }
-];
-
-/* ── Render ── */
-const grid = document.getElementById('productGrid');
-
-products.forEach(p => {
-  const card = document.createElement('div');
-  card.className = 'card';
-
-  /* Header */
-  const header = document.createElement('div');
-  header.className = 'card-header';
-  header.innerHTML = `<span class="name">${p.id}. ${p.name}</span><span class="badge">Лазер · шкіра</span>`;
-  card.appendChild(header);
-
-  /* Body */
-  const body = document.createElement('div');
-  body.className = 'card-body';
-
-  /* Description */
-  const desc = document.createElement('p');
-  desc.style.cssText = 'font-size:12px;color:var(--text-muted);margin-bottom:12px;line-height:1.5;';
-  desc.textContent = p.desc;
-  body.appendChild(desc);
-
-  /* Reference images */
-  if (p.refs && p.refs.length) {
-    const refsDiv = document.createElement('div');
-    refsDiv.className = 'refs';
-    p.refs.forEach(r => {
-      const img = document.createElement('img');
-      img.src = r.src;
-      img.alt = r.alt;
-      img.title = r.alt;
-      img.loading = 'lazy';
-      img.onerror = function() {
-        this.style.display = 'none';
-      };
-      refsDiv.appendChild(img);
-    });
-    body.appendChild(refsDiv);
-  }
-
-  /* Prompt */
-  const promptDiv = document.createElement('div');
-  promptDiv.className = 'prompt';
-  promptDiv.textContent = p.prompt;
-
-  const copyBtn = document.createElement('button');
-  copyBtn.className = 'copy-btn';
-  copyBtn.textContent = '📋 Копіювати';
-  copyBtn.addEventListener('click', () => {
-    navigator.clipboard.writeText(p.prompt).then(() => {
-      copyBtn.textContent = '✅ Скопійовано';
-      copyBtn.classList.add('copied');
-      setTimeout(() => {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('copied');
-      }, 2000);
-    }).catch(() => {
-      copyBtn.textContent = '❌ Помилка';
-      copyBtn.classList.add('failed');
-      setTimeout(() => {
-        copyBtn.textContent = '📋 Копіювати';
-        copyBtn.classList.remove('failed');
-      }, 2000);
-    });
-  });
-  promptDiv.appendChild(copyBtn);
-
-  body.appendChild(promptDiv);
-  card.appendChild(body);
-  grid.appendChild(card);
-});
-</script>
 
 </body>
 </html>
