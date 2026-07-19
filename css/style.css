@@ -149,6 +149,9 @@ h1, h2, h3, .hero p { text-wrap: balance; }
   border-color: var(--border-hover);
   transform: translateY(-1px);
 }
+.card:has(img:hover) {
+  overflow: visible;
+}
 
 .card-header {
   padding: 0.9rem 1.1rem;

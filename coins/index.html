@@ -26,6 +26,7 @@
   .section-title.s { color: #ed8936; border-bottom-color: #ed8936; }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 24px; }
   .card { background: #16162a; border: 1px solid #2a2a4a; border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+  .card:has(img:hover) { overflow: visible; }
   .card:hover { border-color: #4a4a7a; }
   .card-header { padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2a2a4a; }
   .card.v .card-header { border-bottom-color: rgba(233,69,96,0.3); }
