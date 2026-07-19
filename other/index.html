@@ -38,6 +38,8 @@
     border: 1px solid var(--border);
     object-fit: cover;
     display: block;
+    cursor: pointer;
+    transition: transform 0.15s;
   }
 
   /* Placeholder block when no mockup image exists */
@@ -97,7 +99,7 @@
     border-radius: 0 6px 6px 0;
     font-size: 12px;
     line-height: 1.6;
-    color: #bbc;
+    color: var(--text-muted);
   }
   .fact .src {
     font-size: 10px;
@@ -106,13 +108,9 @@
   }
 
   /* Ref & mockup image hover zoom */
-  .media-col img {
-    cursor: pointer;
-    transition: transform 0.15s;
-  }
   @media (hover: hover) {
     .media-col img:hover {
-      transform: scale(2.5);
+      transform: scale(2.2);
       z-index: 10;
       position: relative;
       box-shadow: 0 4px 24px rgba(0,0,0,0.5);

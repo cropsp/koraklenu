@@ -17,144 +17,55 @@
   }
   .intro strong { color: var(--accent-gold); }
 
-  /* ── Product grid ── */
-  .product-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-    gap: 24px;
-  }
+  /* ── Product grid override (wider cards for wood) ── */
+  .grid { grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); }
 
-  /* ── Product card ── */
-  .product-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .product-card:hover { border-color: var(--accent-gold); }
-  .product-card:has(img:hover) { overflow: visible; }
+  /* ── Category colors ── */
+  .card .badge { background: var(--accent-gold); color: #1a1a2e; }
+  .card .name { color: var(--accent-gold); }
 
-  .product-card-top {
-    display: flex;
-    gap: 0;
-    min-height: 200px;
-  }
-
-  /* ── Left: reference images ── */
-  .card-refs {
-    flex: 0 0 48%;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    overflow: hidden;
-  }
-  .card-refs:has(img:hover) { overflow: visible; }
-  .card-refs img {
-    width: 100%;
-    height: auto;
-    max-height: 140px;
+  /* ── Media side-by-side (ref left, mockup right) ── */
+  .media { display: flex; gap: 10px; margin-bottom: 14px; }
+  .media-col { flex: 1; min-width: 0; }
+  .media-col .label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col img {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px solid var(--border);
     object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--border);
     cursor: pointer;
     transition: transform 0.15s;
   }
   @media (hover: hover) {
-    .card-refs img:hover {
+    .media-col img:hover {
       transform: scale(2.2);
-      z-index: 10;
-      position: relative;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.6);
-    }
-  }
-  .card-refs .ref-label {
-    font-size: 10px;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  /* ── Right: placeholder ── */
-  .card-placeholder img {
-    width: 100%; height: 100%;
-    object-fit: cover; border-radius: 6px;
-    cursor: pointer;
-    transition: transform 0.15s;
-  }
-  @media (hover: hover) {
-    .card-placeholder img:hover {
-      transform: scale(1.8);
       z-index: 10;
       position: relative;
       box-shadow: 0 4px 24px rgba(0,0,0,0.5);
     }
   }
 
-  /* ── Right: placeholder ── */
-  .card-placeholder {
-    flex: 1;
-    margin: 12px 12px 12px 0;
-    background: rgba(255,255,255,0.02);
-    border: 1px dashed var(--border);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    color: var(--text-dim);
-    font-size: 12px;
-    text-align: center;
-    padding: 16px;
+  /* ── Placeholder (no generated image yet) ── */
+  .placeholder {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px dashed var(--border);
+    background: rgba(212,168,67,0.06);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 36px;
+    gap: 8px; text-align: center; padding: 16px;
   }
-  .card-placeholder .ph-icon {
-    font-size: 36px;
-    opacity: 0.5;
-  }
+  .placeholder span { font-size: 12px; color: var(--text-dim); }
 
-  /* ── Bottom: info ── */
-  .product-card-bottom {
-    padding: 14px 18px;
-    border-top: 1px solid var(--border);
-  }
-  .product-card-bottom .product-name {
-    font-size: 15px;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 6px;
-  }
-  .product-card-bottom .product-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.55;
-    margin-bottom: 10px;
-  }
-  .product-card-bottom .product-badge {
-    display: inline-block;
-    padding: 3px 12px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    background: var(--accent-gold);
-    color: #1a1a2e;
+  /* ── Product description ── */
+  .product-desc {
+    font-size: 12px; color: var(--text-muted);
+    line-height: 1.6; margin-bottom: 14px;
   }
 
   /* ── Responsive ── */
   @media (max-width: 560px) {
-    .product-grid { grid-template-columns: 1fr; }
-    .product-card-top { flex-direction: column; }
-    .card-refs {
-      flex: auto;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-    .card-refs img {
-      width: 100%;
-      max-height: 220px;
-    }
-    .card-placeholder { margin: 0 12px 12px; min-height: 120px; }
+    .grid { grid-template-columns: 1fr; }
+    .media { flex-direction: column; }
   }
 </style>
 </head>
@@ -189,7 +100,7 @@
     плінфа з тризубом НМІУ, Остромирове Євангеліє, мозаїки Софії Київської.
   </p>
 
-  <div id="product-grid" class="product-grid">
+  <div id="product-grid" class="grid">
     <!-- Rendered by JavaScript -->
   </div>
 </div>
@@ -279,29 +190,34 @@ function renderProducts() {
   if (!grid) return;
 
   grid.innerHTML = products.map(p => `
-    <div class="product-card">
-      <div class="product-card-top">
-        <div class="card-refs">
-          <span class="ref-label">Референс${p.refs.length > 1 ? 'и' : ''}</span>
-          ${p.refs.map(r => `
-            <a href="${r.url}" target="_blank" rel="noopener" title="${r.label}">
-              <img src="${r.url}" alt="${r.label}" loading="lazy" onerror="this.parentElement.style.display='none'">
-            </a>
-          `).join('')}
-        </div>
-        <div class="card-placeholder">
-          ${p.productImage ? `
-            <img src="${p.productImage}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:6px;">
-          ` : `
-            <div class="ph-icon">Фото</div>
-            <span>Зображення з'явиться<br>після генерації</span>
-          `}
-        </div>
+    <div class="card">
+      <div class="card-header">
+        <span class="name">${p.name}</span>
+        <span class="badge">Фанера · лазер</span>
       </div>
-      <div class="product-card-bottom">
-        <div class="product-name">${p.name}</div>
-        <div class="product-desc">${p.desc}</div>
-        <span class="product-badge">Фанера · лазер</span>
+      <div class="card-body">
+        <p class="product-desc">${p.desc}</p>
+        <div class="media">
+          <div class="media-col">
+            <div class="label">Референс${p.refs.length > 1 ? 'и' : ''}</div>
+            ${p.refs.map(r => `
+              <a href="${r.url}" target="_blank" rel="noopener" title="${r.label}">
+                <img src="${r.url}" alt="${r.label}" loading="lazy" onerror="this.parentElement.style.display='none'">
+              </a>
+            `).join('')}
+          </div>
+          <div class="media-col">
+            <div class="label">Мокап</div>
+            ${p.productImage ? `
+              <img src="${p.productImage}" alt="${p.name}" loading="lazy">
+            ` : `
+              <div class="placeholder">
+                <span>Фото</span>
+                <span>Зображення з'явиться<br>після генерації</span>
+              </div>
+            `}
+          </div>
+        </div>
       </div>
     </div>
   `).join('');

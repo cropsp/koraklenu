@@ -20,10 +20,10 @@
   /* ── Side-by-side media (ref left, mockup right) ── */
   .media { display: flex; gap: 10px; margin-bottom: 14px; }
   .media-col { flex: 1; min-width: 0; }
-  .media-col .label { font-size: 10px; color: #667; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col .label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
   .media-col img {
     width: 100%; aspect-ratio: 1/1;
-    border-radius: 6px; border: 1px solid #2a2a4a;
+    border-radius: 6px; border: 1px solid var(--border);
     object-fit: cover;
     cursor: pointer;
     transition: transform 0.15s;
@@ -43,23 +43,23 @@
   /* ── Placeholder (no generated image yet) ── */
   .placeholder {
     width: 100%; aspect-ratio: 1/1;
-    border-radius: 6px; border: 1px dashed #2a2a4a;
+    border-radius: 6px; border: 1px dashed var(--border);
     background: linear-gradient(135deg, rgba(66,99,235,0.05) 0%, rgba(66,99,235,0.02) 100%);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    color: #334; font-size: 40px;
+    color: var(--text-dim); font-size: 40px;
   }
-  .placeholder span { font-size: 10px; color: #445; margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
+  .placeholder span { font-size: 10px; color: var(--text-dim); margin-top: 8px; text-transform: uppercase; letter-spacing: 1px; }
 
   /* ── Fact block ── */
   .fact {
     background: rgba(255,255,255,0.04);
-    border-left: 3px solid #4a4a7a;
+    border-left: 3px solid var(--border-hover);
     padding: 10px 14px;
     border-radius: 0 6px 6px 0;
-    font-size: 12px; line-height: 1.6; color: #bbc;
+    font-size: 12px; line-height: 1.6; color: var(--text-muted);
   }
-  .fact .src { font-size: 10px; color: #556; margin-top: 4px; }
+  .fact .src { font-size: 10px; color: var(--text-dim); margin-top: 4px; }
 
   /* ── Responsive ── */
   @media (max-width: 500px) {

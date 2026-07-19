@@ -7,46 +7,24 @@
 <link rel="stylesheet" href="../css/style.css">
 <style>
   /* ── Hybrid category overrides ── */
-  :root {
-    --cat-accent: var(--accent-orange);
-    --cat-accent-dim: rgba(237,137,54,0.25);
-  }
   .hero h1 { color: var(--accent-orange); }
-
   .section-title { color: var(--accent-orange); border-bottom-color: var(--accent-orange); }
-
   .card .badge { background: var(--accent-orange); color: #1a1a2e; }
   .card .name { color: var(--accent-orange); }
 
-  /* ── Two-column product layout ── */
-  .product-cols {
-    display: flex;
-    gap: 16px;
-    margin-bottom: 12px;
-  }
-  .product-cols .col-ref {
-    flex: 0 0 48%;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .product-cols .col-gen {
-    flex: 1;
-    display: flex;
-    align-items: stretch;
-  }
-  .col-ref img {
-    width: 100%;
-    height: auto;
-    max-height: 160px;
+  /* ── Media side-by-side (ref left, mockup right) ── */
+  .media { display: flex; gap: 10px; margin-bottom: 14px; }
+  .media-col { flex: 1; min-width: 0; }
+  .media-col .label { font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .media-col img {
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px solid var(--border);
     object-fit: cover;
-    border-radius: 6px;
-    border: 1px solid var(--border);
     cursor: pointer;
     transition: transform 0.15s;
   }
   @media (hover: hover) {
-    .col-ref img:hover {
+    .media-col img:hover {
       transform: scale(2.2);
       z-index: 10;
       position: relative;
@@ -54,83 +32,34 @@
     }
   }
 
-  /* ── Generated image hover ── */
-  .col-gen img {
-    cursor: pointer;
-    transition: transform 0.15s;
-  }
-  @media (hover: hover) {
-    .col-gen img:hover {
-      transform: scale(2.2);
-      z-index: 10;
-      position: relative;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-    }
-  }
-
-  /* ── Placeholder ── */
+  /* ── Placeholder (no generated image yet) ── */
   .placeholder {
-    flex: 1;
-    min-height: 200px;
-    background: var(--bg-surface);
-    border: 1px dashed var(--border);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dim);
-    font-size: 13px;
+    width: 100%; aspect-ratio: 1/1;
+    border-radius: 6px; border: 1px dashed var(--border);
+    background: rgba(237,137,54,0.06);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 40px;
     gap: 8px;
-    text-align: center;
-    padding: 16px;
   }
-  .placeholder .icon {
-    font-size: 40px;
-    opacity: 0.5;
-  }
-  .placeholder .label {
-    font-size: 11px;
-    color: var(--text-dim);
-  }
+  .placeholder span { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
 
-  /* ── Description ── */
+  /* ── Product description ── */
   .product-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 4px;
+    font-size: 12px; color: var(--text-muted);
+    line-height: 1.6; margin-bottom: 14px;
   }
 
   /* ── Source link ── */
   .source-link {
-    font-size: 10px;
-    color: var(--text-dim);
-    margin-top: 6px;
+    font-size: 10px; color: var(--text-dim); margin-top: 10px;
   }
-  .source-link a {
-    color: var(--accent-orange);
-    text-decoration: none;
-  }
+  .source-link a { color: var(--accent-orange); text-decoration: none; }
   .source-link a:hover { text-decoration: underline; }
 
   /* ── Responsive ── */
-  @media (max-width: 600px) {
-    .product-cols {
-      flex-direction: column;
-    }
-    .product-cols .col-ref {
-      flex: unset;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-    .col-ref img {
-      max-height: 100px;
-      max-width: 48%;
-    }
-    .placeholder {
-      min-height: 140px;
-    }
+  @media (max-width: 500px) {
+    .media { flex-direction: column; }
   }
 </style>
 </head>
@@ -166,16 +95,18 @@
       </div>
       <div class="card-body">
         <p class="product-desc">Кепка-«dad cap» кольору вицвілої оливи з круглим шкіряним патчем, пришитим спереду. На патчі — лазерне гравіювання грифона в обрамленні плетеного бордюру (за Сахнівською діадемою, XII ст.).</p>
-        <div class="product-cols">
-          <div class="col-ref">
+        <div class="media">
+          <div class="media-col">
+            <div class="label">Референс</div>
             <img src="https://spadok.org.ua/images/bolokhiv/2456.jpg" alt="Сахнівська діадема — грифони" loading="lazy" onerror="this.style.display='none'">
             <img src="https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg" alt="Браслет-наруч 1893 — грифони, чернь" loading="lazy" onerror="this.style.display='none'">
           </div>
-          <div class="col-gen">
+          <div class="media-col">
+            <div class="label">Мокап</div>
             <div class="placeholder">
-              <span class="icon">Фото</span>
+              <span>Фото</span>
               <span>Генероване зображення</span>
-              <span class="label">буде додано після генерації</span>
+              <span>буде додано після генерації</span>
             </div>
           </div>
         </div>
@@ -193,16 +124,18 @@
       </div>
       <div class="card-body">
         <p class="product-desc">Набір у крафтовій коробці з деревною стружкою: пісочна футболка з принтом срібника Володимира, шкіряний браслет із гравійованими грифонами, дерев'яний магніт-монета, картка з описом. Усі дизайни за верифікованими референсами.</p>
-        <div class="product-cols">
-          <div class="col-ref">
+        <div class="media">
+          <div class="media-col">
+            <div class="label">Референс</div>
             <img src="../references_coins_split/sribnyk_volodymyr.jpg" alt="Срібник Володимира Великого, тип IV (НМІУ)" loading="lazy" onerror="this.style.display='none'">
             <img src="https://spadok.org.ua/images/braslety-naruchni/3_6480.jpg" alt="Браслет-наруч 1893 — грифони, чернь" loading="lazy" onerror="this.style.display='none'">
           </div>
-          <div class="col-gen">
+          <div class="media-col">
+            <div class="label">Мокап</div>
             <div class="placeholder">
-              <span class="icon">Фото</span>
+              <span>Фото</span>
               <span>Генероване зображення</span>
-              <span class="label">буде додано після генерації</span>
+              <span>буде додано після генерації</span>
             </div>
           </div>
         </div>
@@ -220,15 +153,17 @@
       </div>
       <div class="card-body">
         <p class="product-desc">Темна бавовняна сумка-тоут із нашитою аплікацією: силует грифона, вирізаний лазером зі світло-коричневої шкіри, пришитий контрастною ниткою. За мотивами Сахнівської діадеми.</p>
-        <div class="product-cols">
-          <div class="col-ref">
+        <div class="media">
+          <div class="media-col">
+            <div class="label">Референс</div>
             <img src="https://spadok.org.ua/images/bolokhiv/2456.jpg" alt="Сахнівська діадема — грифони" loading="lazy" onerror="this.style.display='none'">
           </div>
-          <div class="col-gen">
+          <div class="media-col">
+            <div class="label">Мокап</div>
             <div class="placeholder">
-              <span class="icon">Фото</span>
+              <span>Фото</span>
               <span>Генероване зображення</span>
-              <span class="label">буде додано після генерації</span>
+              <span>буде додано після генерації</span>
             </div>
           </div>
         </div>
